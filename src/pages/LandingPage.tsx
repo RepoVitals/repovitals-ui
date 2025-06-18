@@ -1,8 +1,17 @@
-import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Badge, BarChart3, Check, Code2, GitFork, Lock, Search, Shield, Star, TrendingUp, Users, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Lock, TrendingUp, Badge, Star, GitFork, Code2, ArrowRight, Check, Users, Zap, BarChart3, Search } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
+  const [index, setIndex] = useState(0);
+  const words = ['Audited', 'Trusted', 'Ranked', 'Quantified'];
+
+  useEffect(() => {
+    const timer = setInterval(() => setIndex((i) => (i + 1) % words.length), 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -12,18 +21,27 @@ const LandingPage: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                  <span className="text-gray-900 dark:text-white">Open Source,</span>
-                  <br />
-                  <span className="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent">
-                    Quantified
-                  </span>
-                </h1>
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+                <span className="text-gray-900 dark:text-white">Open Source,</span>
+                 <br />
+                 <AnimatePresence mode="wait">
+                  <motion.span
+                    key={words[index]}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent"
+                  >
+                    {words[index]}
+                  </motion.span>
+                 </AnimatePresence>
+              </h1>
                 <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Analyze GitHub repository health, security, and maintenance signals with comprehensive scoring and insights powered by OSSF Scorecard.
+                  Analyze GitHub repository health, security, and maintenance signals with comprehensive scoring and insights powered by OSSF Scorecard, Criticality Score and Libraries.io.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/explore"
