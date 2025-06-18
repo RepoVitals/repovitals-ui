@@ -1,0 +1,627 @@
+import { AlertTriangle, Award, CheckCircle, Clock, ExternalLink, GitFork, Plus, Search, Shield, Sliders, Star, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+function getBreakpoint(width: number): string {
+  if (width < 640) return 'sm';
+  if (width < 768) return 'md';
+  if (width < 1024) return 'lg';
+  if (width < 1280) return 'xl';
+  return '2xl';
+}
+
+const Explore: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [scoreRange, setScoreRange] = useState([0, 10]);
+  const [sortBy, setSortBy] = useState('score');
+  const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [breakpoint, setBreakpoint] = useState(() => getBreakpoint(window.innerWidth));
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newBreakpoint = getBreakpoint(window.innerWidth);
+      setBreakpoint(newBreakpoint);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  // Mock data - in real app this would come from API
+  const repositories = [
+    {
+      id: 1,
+      owner: 'facebook',
+      name: 'react',
+      description: 'A declarative, efficient, and flexible JavaScript library for building user interfaces.',
+      language: 'JavaScript',
+      stars: 218000,
+      forks: 45200,
+      score: 9.2,
+      security: 8.7,
+      maintenance: 9.5,
+      popularity: 9.8,
+      category: 'Web Framework',
+      license: 'MIT',
+      lastUpdated: '2 hours ago',
+      badges: ['maintained', 'secure', 'popular'],
+      hasFullData: true
+    },
+    {
+      id: 2,
+      owner: 'microsoft',
+      name: 'vscode',
+      description: 'Visual Studio Code - Open Source ("Code - OSS")',
+      language: 'TypeScript',
+      stars: 156000,
+      forks: 27800,
+      score: 8.9,
+      security: 9.1,
+      maintenance: 8.8,
+      popularity: 8.7,
+      category: 'Developer Tool',
+      license: 'MIT',
+      lastUpdated: '4 hours ago',
+      badges: ['maintained', 'secure', 'popular'],
+      hasFullData: true
+    },
+    {
+      id: 3,
+      owner: 'nodejs',
+      name: 'node',
+      description: 'Node.js JavaScript runtime',
+      language: 'JavaScript',
+      stars: 102000,
+      forks: 28100,
+      score: 8.5,
+      security: 8.2,
+      maintenance: 8.9,
+      popularity: 8.4,
+      category: 'Runtime',
+      license: 'MIT',
+      lastUpdated: '6 hours ago',
+      badges: ['maintained', 'secure'],
+      hasFullData: true
+    },
+    {
+      id: 4,
+      owner: 'tensorflow',
+      name: 'tensorflow',
+      description: 'An Open Source Machine Learning Framework for Everyone',
+      language: 'Python',
+      stars: 182000,
+      forks: 74200,
+      score: 8.1,
+      security: 7.8,
+      maintenance: 8.6,
+      popularity: 7.9,
+      category: 'AI/ML',
+      license: 'Apache-2.0',
+      lastUpdated: '1 day ago',
+      badges: ['maintained', 'popular'],
+      hasFullData: false
+    },
+    {
+      id: 5,
+      owner: 'vercel',
+      name: 'next.js',
+      description: 'The React Framework for the Web',
+      language: 'JavaScript',
+      stars: 118000,
+      forks: 25300,
+      score: 9.0,
+      security: 8.9,
+      maintenance: 9.2,
+      popularity: 8.9,
+      category: 'Web Framework',
+      license: 'MIT',
+      lastUpdated: '3 hours ago',
+      badges: ['maintained', 'secure', 'popular'],
+      hasFullData: true
+    },
+    {
+      id: 6,
+      owner: 'vuejs',
+      name: 'vue',
+      description: 'Vue.js is a progressive, incrementally-adoptable JavaScript framework',
+      language: 'TypeScript',
+      stars: 206000,
+      forks: 33700,
+      score: 8.7,
+      security: 8.4,
+      maintenance: 9.1,
+      popularity: 8.6,
+      category: 'Web Framework',
+      license: 'MIT',
+      lastUpdated: '5 hours ago',
+      badges: ['maintained', 'secure', 'popular'],
+      hasFullData: true
+    },
+    {
+        id: 7,
+        owner: 'lodash',
+        name: 'lodash',
+        description: 'A modern JavaScript utility library delivering modularity, performance & extras.',
+        language: 'JavaScript',
+        stars: 57000,
+        forks: 7000,
+        score: 4.8,
+        security: 3.9,
+        maintenance: 5.1,
+        popularity: 6.3,
+        category: 'Utility Library',
+        license: 'MIT',
+        lastUpdated: '2 weeks ago',
+        badges: [],
+        hasFullData: true
+      },
+      {
+        id: 8,
+        owner: 'pallets',
+        name: 'flask',
+        description: 'A micro web framework written in Python.',
+        language: 'Python',
+        stars: 65000,
+        forks: 16000,
+        score: 7.5,
+        security: 6.7,
+        maintenance: 8.2,
+        popularity: 7.6,
+        category: 'Web Framework',
+        license: 'BSD-3-Clause',
+        lastUpdated: '5 days ago',
+        badges: ['maintained', 'popular'],
+        hasFullData: true
+      },
+      {
+        id: 9,
+        owner: 'facebook',
+        name: 'react',
+        description: 'A declarative, efficient, and flexible JavaScript library for building user interfaces.',
+        language: 'JavaScript',
+        stars: 212000,
+        forks: 45000,
+        score: 9.2,
+        security: 9.0,
+        maintenance: 9.4,
+        popularity: 9.5,
+        category: 'UI Library',
+        license: 'MIT',
+        lastUpdated: '12 hours ago',
+        badges: ['maintained', 'secure', 'popular'],
+        hasFullData: true
+      },
+      {
+        id: 10,
+        owner: 'python',
+        name: 'cpython',
+        description: 'The Python programming language.',
+        language: 'C',
+        stars: 58000,
+        forks: 27000,
+        score: 7.1,
+        security: 7.5,
+        maintenance: 6.2,
+        popularity: 7.8,
+        category: 'Programming Language',
+        license: 'Python-2.0',
+        lastUpdated: '1 day ago',
+        badges: ['popular'],
+        hasFullData: true
+      },
+      {
+        id: 11,
+        owner: 'getify',
+        name: 'You-Dont-Know-JS',
+        description: 'A book series on JavaScript.',
+        language: 'JavaScript',
+        stars: 170000,
+        forks: 34000,
+        score: 4.5,
+        security: 4.2,
+        maintenance: 3.9,
+        popularity: 7.2,
+        category: 'Educational',
+        license: 'CC-BY-NC-ND-4.0',
+        lastUpdated: '1 month ago',
+        badges: [],
+        hasFullData: true
+      }
+  ];
+
+  const languages = ['All', 'JavaScript', 'TypeScript', 'Python', 'Go', 'Rust', 'Java', 'C++'];
+  const categories = ['All', 'Web Framework', 'Developer Tool', 'AI/ML', 'Runtime', 'Database', 'Security'];
+
+  const getScoreColor = (score: number) => {
+    if (score >= 8) return 'text-green-600 dark:text-green-400';
+    if (score >= 6) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-red-600 dark:text-red-400';
+  };
+
+  const getBadgeIcon = (badge: string) => {
+    switch (badge) {
+      case 'maintained': return <CheckCircle className="h-3 w-3" />;
+      case 'secure': return <Shield className="h-3 w-3" />;
+      case 'popular': return <TrendingUp className="h-3 w-3" />;
+      case 'at-risk': return <AlertTriangle className="h-3 w-3" />;
+      default: return <Award className="h-3 w-3" />;
+    }
+  };
+
+  const getBadgeColor = (badge: string) => {
+    switch (badge) {
+      case 'maintained': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+      case 'secure': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+      case 'popular': return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+      case 'at-risk': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300';
+    }
+  };
+
+  const filteredRepos = repositories.filter(repo => {
+    const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         repo.owner.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         repo.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLanguage = selectedLanguage === 'all' || repo.language === selectedLanguage;
+    const matchesCategory = selectedCategory === 'all' || repo.category === selectedCategory;
+    const matchesScore = repo.score >= scoreRange[0] && repo.score <= scoreRange[1];
+    
+    return matchesSearch && matchesLanguage && matchesCategory && matchesScore;
+  });
+
+  const sortedRepos = [...filteredRepos].sort((a, b) => {
+    switch (sortBy) {
+      case 'score': return b.score - a.score;
+      case 'stars': return b.stars - a.stars;
+      case 'updated': return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+      case 'name': return a.name.localeCompare(b.name);
+      default: return 0;
+    }
+  });
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Explore Open Source
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Discover and analyze the health, security, and maintenance status of popular GitHub repositories.
+            </p>
+          </div>
+
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search repositories by name, owner, or description..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar Filters */}
+          <div className="lg:w-80 space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Filters</h3>
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="lg:hidden p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                >
+                  <Sliders className="h-5 w-5" />
+                </button>
+              </div>
+
+              <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+                {/* Language Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Language
+                  </label>
+                  <select
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    {languages.map(lang => (
+                      <option key={lang} value={lang.toLowerCase()}>{lang}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Category Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Category
+                  </label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    {categories.map(cat => (
+                      <option key={cat} value={cat.toLowerCase()}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Score Range */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Health Score: {scoreRange[0]} - {scoreRange[1]}
+                  </label>
+                  <div className="space-y-2">
+                    <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      value={scoreRange[0]}
+                      onChange={(e) => setScoreRange([parseFloat(e.target.value), scoreRange[1]])}
+                      className="w-full"
+                    />
+                    <input
+                      type="range"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                      value={scoreRange[1]}
+                      onChange={(e) => setScoreRange([scoreRange[0], parseFloat(e.target.value)])}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+
+                {/* Sort By */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    Sort By
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  >
+                    <option value="score">Health Score</option>
+                    <option value="stars">Stars</option>
+                    <option value="updated">Recently Updated</option>
+                    <option value="name">Name</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Stats</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">Total Repositories</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">1.2M+</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">Scanned Today</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">2,847</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600 dark:text-gray-400">Average Score</span>
+                  <span className="font-semibold text-gray-900 dark:text-white">7.3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Results Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {sortedRepos.length} repositories found
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Showing results for your search and filters
+                </p>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'grid' 
+                      ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' 
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-1 w-4 h-4">
+                    <div className="bg-current rounded-sm"></div>
+                    <div className="bg-current rounded-sm"></div>
+                    <div className="bg-current rounded-sm"></div>
+                    <div className="bg-current rounded-sm"></div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === 'list'
+                      ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' 
+                      : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  <div className="space-y-1 w-4 h-4">
+                    <div className="bg-current h-1 rounded-sm"></div>
+                    <div className="bg-current h-1 rounded-sm"></div>
+                    <div className="bg-current h-1 rounded-sm"></div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Repository Grid/List */}
+            {sortedRepos.length > 0 ? (
+              <div className={viewMode === 'grid' ? 'grid md:grid-cols-2 gap-6' : 'space-y-4'}>
+                {sortedRepos.map((repo) => (
+                  <div
+                    key={repo.id}
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700"
+                  >
+                    <div className={viewMode === 'list' && breakpoint !== "sm" ? 'flex items-center justify-between' : 'space-y-4'}>
+                      <div className={viewMode === 'list' && breakpoint !== "sm" ? 'flex-1' : ''}>
+                        {/* Repo Header */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-2">
+                            <Link
+                              to={`/repo/${repo.owner}/${repo.name}`}
+                              className="font-mono text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            >
+                              {repo.owner}/{repo.name}
+                            </Link>
+                            <a
+                              href={`https://github.com/${repo.owner}/${repo.name}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </a>
+                          </div>
+                          {!repo.hasFullData && (
+                            <span className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
+                              Limited Data
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                          {repo.description}
+                        </p>
+
+                        {/* Meta Info */}
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                          <div className="flex items-center space-x-1">
+                            <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                            <span>{repo.language}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-4 w-4" />
+                            <span>{repo.stars.toLocaleString()}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <GitFork className="h-4 w-4" />
+                            <span>{repo.forks.toLocaleString()}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{repo.lastUpdated}</span>
+                          </div>
+                        </div>
+
+                        {/* Badges */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {repo.badges.map((badge, index) => (
+                            <span
+                              key={index}
+                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(badge)}`}
+                            >
+                              {getBadgeIcon(badge)}
+                              <span className="ml-1 capitalize">{badge}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Score and Actions */}
+                      <div className={`${viewMode === 'list' && breakpoint !== "sm" ? 'flex items-center space-x-6' : 'flex items-center justify-between'}`}>
+                        <div className="text-center">
+                          <div className={`text-2xl font-bold ${getScoreColor(repo.score)} mb-1`}>
+                            {repo.score}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">Health Score</div>
+                        </div>
+
+                        <Link
+                          to={`/repo/${repo.owner}/${repo.name}`}
+                          className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
+                        >
+                          View Report
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No repositories found</h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  Try adjusting your search terms or filters to find what you're looking for.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setSelectedLanguage('all');
+                    setSelectedCategory('all');
+                    setScoreRange([0, 10]);
+                  }}
+                  className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom CTA Section */}
+        <div className="mt-16 bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 lg:p-12 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Don't see your repository?
+          </h2>
+          <p className="text-primary-100 text-lg mb-8 max-w-2xl mx-auto">
+            Add any GitHub repository to get instant health insights. Sign up to track repositories, run private scans, and get alerts.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Enter GitHub repository URL..."
+                  className="w-full px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white/50 text-gray-900"
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors">
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+            <Link
+              to="/login"
+              className="inline-flex items-center px-8 py-3 bg-white text-primary-600 hover:bg-gray-50 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              Sign Up Free
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Explore;

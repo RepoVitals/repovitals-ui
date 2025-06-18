@@ -4,11 +4,11 @@ The frontend for RepoVitals — giving developers, maintainers, and enterprises 
 
 ## 🌐 Tech Stack
 
-- Framework: React + Next.js
-- State: Zustand
+- Framework: React + Vite
 - Styling: TailwindCSS
 - Auth: Clerk or Firebase (OAuth + Email)
-- API: Connects to [`repovitals-api`](https://github.com/repovitals/repovitals-api)
+- API: Connects to api.repovitals.com
+
 
 ## 💡 Key Features
 
