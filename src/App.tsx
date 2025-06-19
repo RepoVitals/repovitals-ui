@@ -21,12 +21,12 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/repo/:owner/:name" element={<RepoOverview />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/about" element={<About />} />
             <Route path="/docs" element={<Docs />} />
             <Route path="/repo/:owner/:name/details" element={<RepoDetail />} />
-            <Route path="/login" element={<Login />} />
+            {/* <Route path="/login" element={<Login />} /> */}
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </Layout>

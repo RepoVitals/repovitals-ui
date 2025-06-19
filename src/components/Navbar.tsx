@@ -1,6 +1,6 @@
+import { Menu, Shield, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Shield, Menu, X, Github } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +59,13 @@ const Navbar: React.FC = () => {
             >
               Contact
             </Link>
-            <div className="flex items-center space-x-4">
+            <Link
+                to="https://form.typeform.com/to/E7dTSAHv"
+                className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+              >
+                Join Waitlist
+              </Link>
+            {/* <div className="flex items-center space-x-4">
               <Link
                 to="/login"
                 className="text-gray-700 dark:text-gray-300 hover:text-primary-600 transition-colors"
@@ -72,7 +78,7 @@ const Navbar: React.FC = () => {
               >
                 Dashboard
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Mobile menu button */}
@@ -124,7 +130,13 @@ const Navbar: React.FC = () => {
             >
               Contact
             </Link>
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
+            <Link
+                to="https://form.typeform.com/to/E7dTSAHv"
+                className="block mx-4 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors text-center font-medium"
+              >
+                Join Waitlist
+              </Link>
+            {/* <div className="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
               <Link
                 to="/login"
                 className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-primary-600 transition-colors"
@@ -139,7 +151,7 @@ const Navbar: React.FC = () => {
               >
                 Dashboard
               </Link>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

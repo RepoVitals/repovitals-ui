@@ -1,6 +1,6 @@
+import { ArrowRight, Building, Check, Star, X, Zap } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Check, X, Zap, Building, Users, Shield, Star, ArrowRight } from 'lucide-react';
 
 const Pricing: React.FC = () => {
   const plans = [
@@ -18,7 +18,6 @@ const Pricing: React.FC = () => {
         'Basic health metrics',
         'Community insights',
         'Repository badges',
-        'Up to 10 repositories',
         'Basic support'
       ],
       limitations: [
@@ -41,7 +40,8 @@ const Pricing: React.FC = () => {
       features: [
         'Everything in Free',
         'Private repository scanning',
-        'Fresh OSSF Scorecard scans',
+        'Frequent data sync & refresh',
+        'Fresh OSSF Scorecard and Criticality Score scans',
         'Advanced security insights',
         'Shareable reports',
         'API access (1000 calls/month)',
@@ -63,6 +63,7 @@ const Pricing: React.FC = () => {
       buttonColor: 'bg-purple-600 hover:bg-purple-700',
       features: [
         'Everything in Pro',
+        'Priority data sync & refresh',
         'Bulk repository management',
         'Advanced portfolio analytics',
         'Custom integrations',
@@ -81,6 +82,10 @@ const Pricing: React.FC = () => {
     {
       question: 'What is OSSF Scorecard?',
       answer: 'OSSF Scorecard is an automated tool that assesses the security posture of open source projects. It evaluates various security practices and provides a score to help users make informed decisions about using or contributing to projects.'
+    },
+    {
+      question: 'What is OSSF Criticality Score?',
+      answer: 'OSSF Criticality Score measures how essential an open-source project is based on usage, activity, and maintenance. It helps identify which projects are most important to secure and support.'
     },
     {
       question: 'How often are repositories scanned?',
@@ -140,7 +145,7 @@ const Pricing: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
                   <p className="text-gray-600 dark:text-gray-300 mb-6">{plan.description}</p>
-                  
+
                   <div className="mb-6">
                     <div className="flex items-baseline justify-center">
                       <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
@@ -152,18 +157,18 @@ const Pricing: React.FC = () => {
 
                   {plan.name === 'Enterprise' ? (
                     <Link
-                      to="/contact"
+                      to="https://form.typeform.com/to/E7dTSAHv"
                       className={`w-full inline-flex items-center justify-center px-6 py-3 ${plan.buttonColor} text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl`}
                     >
-                      Contact Sales
+                      Join Waitlist {/* Contact Sales (Link should also be updated to /contact)*/}
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   ) : (
                     <Link
-                      to="/dashboard"
+                      to={plan.name === 'Free' ? '/explore' : 'https://form.typeform.com/to/E7dTSAHv'}
                       className={`w-full inline-flex items-center justify-center px-6 py-3 ${plan.buttonColor} text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl`}
                     >
-                      {plan.name === 'Free' ? 'Get Started' : 'Start Free Trial'}
+                      {plan.name === 'Free' ? 'Start Exploring' : 'Join Waitlist'} {/* Start Free Trial (also update Link) */}
                     </Link>
                   )}
                 </div>
@@ -275,10 +280,10 @@ const Pricing: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/dashboard"
+                to="https://form.typeform.com/to/E7dTSAHv"
                 className="inline-flex items-center px-8 py-4 bg-white text-primary-600 hover:bg-gray-50 font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                Start Free Trial
+                Join Waitlist {/* Start Free Trial (also update link)*/}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link

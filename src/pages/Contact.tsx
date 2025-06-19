@@ -1,5 +1,5 @@
+import { Bug, Building, Github, HelpCircle, Lightbulb, Linkedin, Mail, Send, Twitter } from 'lucide-react';
 import React, { useState } from 'react';
-import { Mail, MessageSquare, Phone, MapPin, Send, Github, Twitter, Linkedin, HelpCircle, Bug, Lightbulb, Building } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -142,18 +142,10 @@ const Contact: React.FC = () => {
                   <Mail className="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5" />
                   <div>
                     <div className="font-medium text-gray-900 dark:text-white">Email</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">hello@repovitals.com</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">support@repovitals.com</div>
                   </div>
                 </div>
-                
-                <div className="flex items-start space-x-3">
-                  <MessageSquare className="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">Live Chat</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">Available 9 AM - 5 PM EST</div>
-                  </div>
-                </div>
-                
+  
                 <div className="flex items-start space-x-3">
                   <Github className="h-5 w-5 text-primary-600 dark:text-primary-400 mt-0.5" />
                   <div>
@@ -164,48 +156,28 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Links */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Quick Links</h3>
-              
-              <div className="space-y-3">
-                <a href="/docs" className="block text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                  📚 Documentation
-                </a>
-                <a href="/pricing" className="block text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                  💰 Pricing & Plans
-                </a>
-                <a href="/about" className="block text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                  ℹ️ About RepoVitals
-                </a>
-                <a href="#" className="block text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                  🔒 Privacy Policy
-                </a>
-                <a href="#" className="block text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                  📋 Terms of Service
-                </a>
-              </div>
-            </div>
-
             {/* Social Links */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Follow Us</h3>
               
               <div className="flex space-x-4">
                 <a
-                  href="#"
+                  href="https://github.com/repovitals"
+                  target="_blank" rel="noopener noreferrer"
                   className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
                 >
                   <Github className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://twitter.com/intent/follow?screen_name=repovitals"
+                  target="_blank" rel="noopener noreferrer"
                   className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
                 >
                   <Twitter className="h-5 w-5" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/showcase/repovitalsapp"
+                  target="_blank" rel="noopener noreferrer"
                   className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
                 >
                   <Linkedin className="h-5 w-5" />
@@ -245,7 +217,7 @@ const Contact: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Is there a free plan?</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">
-                Yes! Our free plan includes basic repository analysis, community insights, and the ability to track up to 10 public repositories.
+                Yes! Our free plan includes basic repository analysis, community insights, and more.
               </p>
             </div>
             

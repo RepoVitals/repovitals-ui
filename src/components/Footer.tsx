@@ -20,9 +20,9 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Product</h3>
             <ul className="space-y-2 text-sm">
+              <li><Link to="/explore" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Explore</Link></li>
               <li><Link to="/pricing" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Pricing</Link></li>
               <li><Link to="/docs" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Documentation</Link></li>
-              <li><Link to="/dashboard" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Dashboard</Link></li>
             </ul>
           </div>
 
@@ -31,21 +31,21 @@ const Footer: React.FC = () => {
             <ul className="space-y-2 text-sm">
               <li><Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">About</Link></li>
               <li><Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Contact</Link></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Privacy</a></li>
-              <li><a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Terms</a></li>
+              <li><a href="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Privacy</a></li>
+              <li><a href="/terms" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Terms</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
+              <a href="https://github.com/repovitals" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
                 <Github className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
+              <a href="https://twitter.com/intent/follow?screen_name=repovitals" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
+              <a href="mailto:support@repovitals.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
             </div>
