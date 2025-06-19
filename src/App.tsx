@@ -1,15 +1,12 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import LandingPage from './pages/LandingPage';
 import Explore from './pages/Explore';
 import RepoOverview from './pages/RepoOverview';
-import Dashboard from './pages/Dashboard';
 import Pricing from './pages/Pricing';
 import About from './pages/About';
 import Docs from './pages/Docs';
 import RepoDetail from './pages/RepoDetail';
-import Login from './pages/Login';
 import Contact from './pages/Contact';
 
 function App() {
