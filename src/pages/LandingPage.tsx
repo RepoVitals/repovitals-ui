@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { Badge, BarChart3, Check, Code2, GitFork, Lock, Search, Shield, Star, TrendingUp, Users, Zap } from 'lucide-react';
+import { Badge, BarChart3, Check, Code2, GitFork, Globe, Lock, Search, Shield, Star, TrendingUp, Users, Zap } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +11,42 @@ const LandingPage: React.FC = () => {
     const timer = setInterval(() => setIndex((i) => (i + 1) % words.length), 3000);
     return () => clearInterval(timer);
   }, []);
+
+  const stats = [
+    {
+      value: '1.2M+',
+      label: 'Projects Analyzed',
+      icon: Globe,
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      value: '7.3',
+      label: 'Average Security Score',
+      icon: Shield,
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      value: '2,847',
+      label: 'Active Scans Today',
+      icon: Zap,
+      color: 'from-purple-500 to-purple-600'
+    },
+    {
+      value: '45+',
+      label: 'Languages Supported',
+      icon: Code2,
+      color: 'from-orange-500 to-orange-600'
+    }
+  ];
+
+  const topLanguages = [
+    { name: 'JavaScript', percentage: 28, color: 'bg-yellow-400' },
+    { name: 'Python', percentage: 22, color: 'bg-blue-500' },
+    { name: 'TypeScript', percentage: 18, color: 'bg-blue-600' },
+    { name: 'Go', percentage: 12, color: 'bg-cyan-500' },
+    { name: 'Rust', percentage: 8, color: 'bg-orange-600' },
+    { name: 'Java', percentage: 12, color: 'bg-red-500' }
+  ];
 
   return (
     <div className="min-h-screen">
@@ -118,6 +154,104 @@ const LandingPage: React.FC = () => {
                   <span>Last updated 2 hours ago</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Built on Trusted Tools Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Built on Trusted Tools
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              RepoVitals is powered by industry-backed open-source tools trusted by Google, OpenSSF, and GitHub.
+            </p>
+          </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/30 dark:to-red-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Shield className="h-8 w-8 text-red-600 dark:text-red-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">OSSF Scorecard</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Comprehensive security assessment tool developed by the Open Source Security Foundation to evaluate project security practices.
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Globe className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Criticality Score</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Algorithm that determines the influence and importance of open source projects based on various quantitative metrics.
+              </p>
+            </div>
+
+            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Code2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Libraries.io</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                Open dataset providing dependency information and package manager data for better understanding of project ecosystems.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof / Stats Section */}
+      <section className="py-16 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Real-time Insights
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Join thousands of developers and organizations who trust RepoVitals for repository health insights.
+            </p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => {
+              const IconComponent = stat.icon;
+              return (
+                <div
+                  key={index}
+                  className="group bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 p-6 rounded-2xl border border-gray-200 dark:border-gray-600 text-center hover:shadow-lg transition-all duration-300 hover:scale-105"
+                >
+                  <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
+                    <IconComponent className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Top Languages */}
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white text-center mb-8">
+              Most Analyzed Languages
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {topLanguages.map((language, index) => (
+                <div
+                  key={index}
+                  className="group bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 text-center hover:shadow-md transition-all duration-300 hover:scale-105"
+                >
+                  <div className={`w-8 h-8 ${language.color} rounded-lg mx-auto mb-3 group-hover:scale-110 transition-transform`}></div>
+                  <div className="text-sm font-medium text-gray-900 dark:text-white mb-1">{language.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{language.percentage}%</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

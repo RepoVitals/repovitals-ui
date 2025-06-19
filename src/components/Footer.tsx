@@ -1,6 +1,7 @@
+import { Github, Mail, Shield, Twitter } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Github, Twitter, Mail } from 'lucide-react';
+import boltLogo from '../assets/bolt_icon.png';
 
 const Footer: React.FC = () => {
   return (
@@ -48,6 +49,9 @@ const Footer: React.FC = () => {
               <a href="mailto:support@repovitals.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
                 <Mail className="h-5 w-5" />
               </a>
+            </div>
+            <div>
+              <img src={boltLogo} alt="Bolt.new Logo" className='h-20 w-20 mt-3' />
             </div>
           </div>
         </div>
