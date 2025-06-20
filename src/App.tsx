@@ -6,7 +6,6 @@ import RepoOverview from './pages/RepoOverview';
 import Pricing from './pages/Pricing';
 import About from './pages/About';
 import Docs from './pages/Docs';
-import RepoDetail from './pages/RepoDetail';
 import Contact from './pages/Contact';
 
 function App() {
@@ -22,7 +21,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/about" element={<About />} />
             <Route path="/docs" element={<Docs />} />
-            <Route path="/repo/:owner/:name/details" element={<RepoDetail />} />
+            {/* <Route path="/repo/:owner/:name/details" element={<RepoDetail />} /> */}
             {/* <Route path="/login" element={<Login />} /> */}
             <Route path="/contact" element={<Contact />} />
           </Routes>
