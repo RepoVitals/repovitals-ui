@@ -29,9 +29,9 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
   const tabs = [
     { id: "overview", label: "Overview", icon: Activity },
     { id: "scorecard", label: "Security Scorecard", icon: Shield },
+    { id: "criticality", label: "Criticality Score", icon: TrendingUp },
     { id: "contributors", label: "Contributors", icon: Users },
     { id: "dependencies", label: "Dependencies", icon: Code2 },
-    { id: "criticality", label: "Criticality Score", icon: TrendingUp },
   ];
 
   return (
@@ -553,7 +553,6 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                 </div>
               </div>
             )}
-
           </div>
         </div>
       </div>

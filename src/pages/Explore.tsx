@@ -394,7 +394,7 @@ const Explore: React.FC = () => {
                               to={`/repo/${repo.owner}/${repo.name}`}
                               className="font-mono text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                             >
-                              {repo.owner}/{repo.name}
+                              {`${repo.owner}/${repo.name}`}
                             </Link>
                             <a
                               href={`https://github.com/${repo.owner}/${repo.name}`}
@@ -402,7 +402,7 @@ const Explore: React.FC = () => {
                               rel="noopener noreferrer"
                               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                             >
-                              <ExternalLink className="h-4 w-4" />
+                              <ExternalLink className="size-4" />
                             </a>
                           </div>
                           {!repo.hasFullData && (

@@ -134,7 +134,7 @@ const LandingPage: React.FC = () => {
             {/* Demo Card */}
             <div className="lg:pl-8">
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 space-y-6 border border-gray-100 dark:border-gray-700">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center flex-wrap gap-5 sm:space-x-3">
                   <div className="flex items-center space-x-2">
                     <Shield className="h-6 w-6 text-primary-600" />
                     <span className="font-mono text-lg font-semibold">
@@ -162,7 +162,7 @@ const LandingPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                     <Lock className="h-5 w-5 text-green-600 dark:text-green-400 mx-auto mb-1" />
                     <div className="text-sm font-semibold text-green-700 dark:text-green-300">
