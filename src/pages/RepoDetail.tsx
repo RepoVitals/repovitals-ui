@@ -4,14 +4,18 @@ import {
   Code2,
   Users,
   AlertTriangle,
-  Badge,
   Activity,
-  Clock,
   GitCommit,
+  CheckCircle,
+  XCircle,
+  FileText,
+  ExternalLink,
+  TrendingUp,
 } from "lucide-react";
-import { repoDataExport } from "../components/constants";
+import { newRepoReport } from "../components/constants";
+import { formatDate, getCheckIcon } from "../components/functions";
 
-const RepoDetail: React.FC<{ repoData: typeof repoDataExport }> = ({
+const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
   repoData,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -22,18 +26,12 @@ const RepoDetail: React.FC<{ repoData: typeof repoDataExport }> = ({
     return "text-red-600 dark:text-red-400";
   };
 
-  const getScoreBg = (score: number) => {
-    if (score >= 8) return "bg-green-50 dark:bg-green-900/20";
-    if (score >= 6) return "bg-yellow-50 dark:bg-yellow-900/20";
-    return "bg-red-50 dark:bg-red-900/20";
-  };
-
   const tabs = [
     { id: "overview", label: "Overview", icon: Activity },
     { id: "scorecard", label: "Security Scorecard", icon: Shield },
     { id: "contributors", label: "Contributors", icon: Users },
     { id: "dependencies", label: "Dependencies", icon: Code2 },
-    { id: "activity", label: "Activity", icon: Clock },
+    { id: "criticality", label: "Criticality Score", icon: TrendingUp },
   ];
 
   return (
@@ -64,138 +62,6 @@ const RepoDetail: React.FC<{ repoData: typeof repoDataExport }> = ({
           </div>
 
           <div className="p-8">
-            {activeTab === "overview" && (
-              <div className="grid lg:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Quick Stats
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Total Contributors
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        1,547
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Open Issues
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        267
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Open Pull Requests
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        45
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600 dark:text-gray-400">
-                        Latest Release
-                      </span>
-                      <span className="font-semibold text-gray-900 dark:text-white">
-                        v18.2.1
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Health Summary
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-300">
-                        Active maintenance and development
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-300">
-                        Strong security practices
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-300">
-                        Large, engaged community
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <span className="text-gray-600 dark:text-gray-300">
-                        Some dependencies need updates
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "scorecard" && (
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    OSSF Scorecard Results
-                  </h3>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Last scan: {repoData.scorecardData.lastScan}
-                  </span>
-                </div>
-
-                <div className="grid gap-4">
-                  {repoData.scorecardData.checks.map((check, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3">
-                          <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
-                            {check.name}
-                          </span>
-                          <span
-                            className={`text-lg font-bold ${getScoreColor(
-                              check.score
-                            )}`}
-                          >
-                            {check.score}/10
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          {check.description}
-                        </p>
-                      </div>
-                      <div
-                        className={`w-12 h-2 rounded-full ${getScoreBg(
-                          check.score
-                        )}`}
-                      >
-                        <div
-                          className={`h-full rounded-full ${
-                            check.score >= 8
-                              ? "bg-green-500"
-                              : check.score >= 6
-                              ? "bg-yellow-500"
-                              : "bg-red-500"
-                          }`}
-                          style={{ width: `${(check.score / 10) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {activeTab === "contributors" && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
@@ -292,44 +158,402 @@ const RepoDetail: React.FC<{ repoData: typeof repoDataExport }> = ({
               </div>
             )}
 
-            {activeTab === "activity" && (
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                  Recent Activity
-                </h3>
-                <div className="space-y-4">
-                  {repoData.activity.map((activity, index) => (
+            {activeTab === "overview" && (
+              <div className="space-y-8">
+                {/* Quick Stats Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
+                    <GitCommit className="h-8 w-8 text-blue-500 mx-auto mb-3" />
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                      {repoData.commit_stats.total_commits.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Total Commits
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
+                    <Users className="h-8 w-8 text-green-500 mx-auto mb-3" />
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                      {repoData.commit_stats.total_committers}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Contributors
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
+                    <Activity className="h-8 w-8 text-purple-500 mx-auto mb-3" />
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                      {repoData.commit_stats.mean_commits.toFixed(1)}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Avg Commits/Contributor
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
+                    <FileText className="h-8 w-8 text-orange-500 mx-auto mb-3" />
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                      {(repoData.size / 1024).toFixed(1)}MB
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      Repository Size
+                    </div>
+                  </div>
+                </div>
+
+                {/* Repository information */}
+                <div className="space-y-6 border-y border-gray-300/10 py-5">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Repository Information
+                  </h3>
+
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-white">
+                        Basic Information
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Repository ID
+                          </span>
+                          <span className="font-mono text-sm text-gray-900 dark:text-white">
+                            {repoData.id}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Default Branch
+                          </span>
+                          <span className="font-mono text-sm text-gray-900 dark:text-white">
+                            {repoData.default_branch}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Created
+                          </span>
+                          <span className="text-sm text-gray-900 dark:text-white">
+                            {formatDate(repoData.created_at)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Last Push
+                          </span>
+                          <span className="text-sm text-gray-900 dark:text-white">
+                            {formatDate(repoData.pushed_at)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900 dark:text-white">
+                        Repository Status
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Archived
+                          </span>
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              repoData.archived
+                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300"
+                                : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                            }`}
+                          >
+                            {repoData.archived ? "Yes" : "No"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Fork
+                          </span>
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              repoData.fork
+                                ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                                : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300"
+                            }`}
+                          >
+                            {repoData.fork ? "Yes" : "No"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            License
+                          </span>
+                          <span className="text-sm text-gray-900 dark:text-white uppercase">
+                            {repoData.license}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            Size
+                          </span>
+                          <span className="text-sm text-gray-900 dark:text-white">
+                            {(repoData.size / 1024).toFixed(1)} MB
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Repository Health Summary */}
+                <div className="grid lg:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                      Health Summary
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          Active development and maintenance
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          Strong code review practices
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          Fuzzing integration detected
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          Some security vulnerabilities detected
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <XCircle className="h-5 w-5 text-red-500" />
+                        <span className="text-gray-600 dark:text-gray-300">
+                          Missing security policy
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                      Repository Files
+                    </h3>
+                    <div className="space-y-2">
+                      {Object.entries(repoData.metadata.files).map(
+                        ([key, value]) =>
+                          value && (
+                            <div
+                              key={key}
+                              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                            >
+                              <span className="text-sm font-medium text-gray-900 dark:text-white capitalize">
+                                {key.replace("_", " ")}
+                              </span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                                {value}
+                              </span>
+                            </div>
+                          )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "scorecard" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      OSSF Scorecard Results
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      Security assessment based on {repoData.scorecard.version}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <div
+                      className={`text-3xl font-bold ${getScoreColor(
+                        repoData.scorecard.score
+                      )} mb-1`}
+                    >
+                      {repoData.scorecard.score}/10
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      Last scanned: {repoData.scorecard.last_scanned}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4">
+                  {repoData.scorecard.checks.map((check, index) => (
                     <div
                       key={index}
-                      className="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                      className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-sm transition-shadow"
                     >
-                      <div className="flex-shrink-0 mt-1">
-                        {activity.type === "commit" && (
-                          <GitCommit className="h-4 w-4 text-blue-500" />
-                        )}
-                        {activity.type === "release" && (
-                          <Badge className="h-4 w-4 text-green-500" />
-                        )}
-                        {activity.type === "issue" && (
-                          <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                        )}
-                        {activity.type === "pr" && (
-                          <Code2 className="h-4 w-4 text-purple-500" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          {activity.message}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2">
+                            {getCheckIcon(check.score)}
+                            <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
+                              {check.name}
+                            </span>
+                            <span
+                              className={`text-lg font-bold ${getScoreColor(
+                                check.score
+                              )}`}
+                            >
+                              {check.score === -1 ? "N/A" : `${check.score}/10`}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            {check.reason}
+                          </p>
+                          {check.details && check.details.length > 0 && (
+                            <details className="text-xs text-gray-500 dark:text-gray-400">
+                              <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
+                                View details ({check.details.length} items)
+                              </summary>
+                              <ul className="mt-2 space-y-1 ml-4">
+                                {check.details
+                                  .slice(0, 3)
+                                  .map((detail, idx) => (
+                                    <li key={idx} className="list-disc">
+                                      {detail}
+                                    </li>
+                                  ))}
+                                {check.details.length > 3 && (
+                                  <li className="text-gray-400">
+                                    ... and {check.details.length - 3} more
+                                  </li>
+                                )}
+                              </ul>
+                            </details>
+                          )}
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          by {activity.author} • {activity.time}
-                        </div>
+                        <a
+                          href={check.doc_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors ml-4"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             )}
+
+            {activeTab === "criticality" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Criticality Score Analysis
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      Measures the influence and importance of this project
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <div
+                      className={`text-3xl font-bold ${getScoreColor(
+                        repoData.criticality.score
+                      )} mb-1`}
+                    >
+                      {repoData.criticality.score}/10
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      Last scanned: {repoData.criticality.last_scanned}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Commit Frequency
+                        </span>
+                        <span className="text-lg font-bold text-gray-900 dark:text-white">
+                          {repoData.criticality.commit_frequency.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                        <div
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{
+                            width: `${
+                              repoData.criticality.commit_frequency * 100
+                            }%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Issue Comment Frequency
+                    </span>
+                    <span className="text-lg font-bold text-gray-900 dark:text-white">
+                      {repoData.criticality.issue_comment_frequency.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full"
+                      style={{
+                        width: `${
+                          repoData.criticality.issue_comment_frequency * 100
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Recent Releases
+                      </span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {repoData.criticality.recent_release_count}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        GitHub Mentions
+                      </span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {repoData.criticality.github_mention_count}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
