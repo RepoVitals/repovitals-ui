@@ -1,7 +1,19 @@
-import { Github, Mail, Shield, Twitter } from 'lucide-react';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import boltLogo from '../assets/bolt_icon.png';
+import React from "react";
+import { Link } from "react-router-dom";
+import boltLogo from "../assets/bolt_icon.png";
+import { companyLinks, connectLinks, productLinks } from "./constants";
+import { Shield } from "lucide-react";
+
+const linksMap = (link: (typeof productLinks)[0]) => (
+  <li key={link.path}>
+    <Link
+      to={link.path}
+      className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors"
+    >
+      {link.label}
+    </Link>
+  </li>
+);
 
 const Footer: React.FC = () => {
   return (
@@ -14,50 +26,57 @@ const Footer: React.FC = () => {
               <span className="text-xl font-bold font-mono">RepoVitals</span>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Open source repository health and security analysis, powered by OSSF Scorecard and community standards.
+              Open source repository health and security analysis, powered by
+              OSSF Scorecard and community standards.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Product</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/explore" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Explore</Link></li>
-              <li><Link to="/pricing" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Pricing</Link></li>
-              <li><Link to="/docs" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Documentation</Link></li>
-            </ul>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">
+              Product
+            </h3>
+            <ul className="space-y-2 text-sm">{productLinks.map(linksMap)}</ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Company</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">About</Link></li>
-              <li><Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Contact</Link></li>
-              <li><a href="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Privacy</a></li>
-              <li><a href="/terms" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">Terms</a></li>
-            </ul>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">
+              Company
+            </h3>
+            <ul className="space-y-2 text-sm">{companyLinks.map(linksMap)}</ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Connect</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">
+              Connect
+            </h3>
             <div className="flex space-x-4">
-              <a href="https://github.com/repovitals" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
-                <Github className="h-5 w-5" />
-              </a>
-              <a href="https://twitter.com/intent/follow?screen_name=repovitals" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="mailto:support@repovitals.com" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors">
-                <Mail className="h-5 w-5" />
-              </a>
+              {connectLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors"
+                >
+                  <link.icon className="h-5 w-5" />
+                </a>
+              ))}
             </div>
             <div>
-              <img src={boltLogo} alt="Bolt.new Logo" className='h-20 w-20 mt-3' />
+              <img
+                src={boltLogo}
+                alt="Bolt.new Logo"
+                className="h-20 w-20 mt-3"
+              />
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>&copy; 2025 RepoVitals. All rights reserved. Built with ❤️ for the open source community.</p>
+          <p>
+            &copy; 2025 RepoVitals. All rights reserved. Built with ❤️ for the
+            open source community.
+          </p>
         </div>
       </div>
     </footer>
