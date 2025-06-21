@@ -1,30 +1,20 @@
 import {
-  AlertTriangle,
-  Award,
-  CheckCircle,
-  Clock,
   ExternalLink,
   File,
   GitFork,
+  Languages,
   Plus,
   Search,
-  Shield,
   Sliders,
   Star,
-  TrendingUp,
 } from "lucide-react";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { repositories } from "../components/constants";
 import { GoOrganization } from "react-icons/go";
-
-function getBreakpoint(width: number): string {
-  if (width < 640) return "sm";
-  if (width < 768) return "md";
-  if (width < 1024) return "lg";
-  if (width < 1280) return "xl";
-  return "2xl";
-}
+import axios, { AxiosError } from "axios";
+import { toast } from "sonner";
+import { getBreakpoint, getScoreColor } from "../components/functions";
 
 const Explore: React.FC = () => {
   const [searchInput, setSearchInput] = useState({
@@ -35,14 +25,14 @@ const Explore: React.FC = () => {
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [breakpoint, setBreakpoint] = useState(() =>
-    getBreakpoint(window.innerWidth)
-  );
   const [selectedData, setSelectedData] = useState({
     language: "all",
     category: "all",
   });
+  const [loading, setLoading] = useState(false);
+  const [initialRepos, setInitialRepos] = useState(repositories);
 
+  const breakpoint = getBreakpoint(window.innerWidth);
   const { category, language } = selectedData;
   const { owner, repo } = searchInput;
 
@@ -54,6 +44,55 @@ const Explore: React.FC = () => {
         [name]: value,
       };
     });
+  };
+
+  const fetchRepository = async (owner: string, repo: string) => {
+    setLoading(true);
+    const VITE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+    const apiParams = `host/github.com/repositories/${owner}/${repo}`;
+
+    try {
+      const { data } = await axios.get<ApiRes>(
+        `${VITE_API_ENDPOINT}/${apiParams}`
+      );
+
+      console.log(data);
+
+      if (data.success && !data.data) {
+        toast.error(`Repo not found with format: ${owner}/${repo}`);
+        setLoading(false);
+        return;
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+
+      setInitialRepos([data.data]);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        toast.error(err.response?.data.message);
+      } else {
+        toast.error(err instanceof Error ? err.message : "Internal error");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearchSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (owner.trim() && repo.trim()) {
+      const exists = initialRepos.some(
+        (r) =>
+          r.owner.toLowerCase() === owner.toLowerCase() &&
+          r.full_name.toLowerCase() === `${owner}/${repo}`.toLowerCase()
+      );
+
+      if (!exists) {
+        await fetchRepository(owner, repo);
+      }
+    }
   };
 
   const handleLanguageAndCategorySelection = (
@@ -79,16 +118,6 @@ const Explore: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const newBreakpoint = getBreakpoint(window.innerWidth);
-      setBreakpoint(newBreakpoint);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const languages = [
     "All",
     "JavaScript",
@@ -109,71 +138,42 @@ const Explore: React.FC = () => {
     "Security",
   ];
 
-  const getScoreColor = (score: number) => {
-    if (score >= 8) return "text-green-600 dark:text-green-400";
-    if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
-    return "text-red-600 dark:text-red-400";
-  };
+  const filteredRepos = [
+    ...initialRepos.filter((repoItem) => {
+      const matchesSearch =
+        repoItem.full_name
+          .toLowerCase()
+          .includes(`${owner}/${repo}`.toLowerCase()) ||
+        repoItem.owner.toLowerCase().includes(owner.toLowerCase());
+      const matchesLanguage =
+        language === "all" || repoItem.language === language;
+      // const matchesCategory =
+      //   category === "all" || repoItem.category === category;
+      const matchesScore =
+        repoItem?.health_score >= scoreRange[0] &&
+        repoItem?.health_score <= scoreRange[1];
 
-  const getBadgeIcon = (badge: string) => {
-    switch (badge) {
-      case "maintained":
-        return <CheckCircle className="h-3 w-3" />;
-      case "secure":
-        return <Shield className="h-3 w-3" />;
-      case "popular":
-        return <TrendingUp className="h-3 w-3" />;
-      case "at-risk":
-        return <AlertTriangle className="h-3 w-3" />;
-      default:
-        return <Award className="h-3 w-3" />;
-    }
-  };
-
-  const getBadgeColor = (badge: string) => {
-    switch (badge) {
-      case "maintained":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
-      case "secure":
-        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
-      case "popular":
-        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300";
-      case "at-risk":
-        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
-    }
-  };
-
-  const filteredRepos = repositories.filter((repo) => {
-    const matchesSearch =
-      repo.name.toLowerCase().includes(searchInput.repo.toLowerCase()) ||
-      repo.owner.toLowerCase().includes(owner.toLowerCase());
-    // repo.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLanguage = language === "all" || repo.language === language;
-    const matchesCategory = category === "all" || repo.category === category;
-    const matchesScore =
-      repo.score >= scoreRange[0] && repo.score <= scoreRange[1];
-
-    return matchesSearch && matchesLanguage && matchesCategory && matchesScore;
-  });
+      return matchesSearch && matchesLanguage && matchesScore;
+    }),
+  ];
 
   const sortedRepos = [...filteredRepos].sort((a, b) => {
     switch (sortBy) {
       case "score":
-        return b.score - a.score;
+        return b.health_score - a.health_score;
       case "stars":
-        return b.stars - a.stars;
+        return b.stargazers_count - a.stargazers_count;
       case "updated":
         return (
-          new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
+          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
         );
       case "name":
-        return a.name.localeCompare(b.name);
+        return a.full_name.localeCompare(b.full_name);
       default:
         return 0;
     }
   });
+  console.log(sortedRepos[0], filteredRepos[0], sortedRepos);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -191,7 +191,10 @@ const Explore: React.FC = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto space-y-5">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="max-w-2xl mx-auto space-y-5"
+          >
             <div className="flex items-center gap-5">
               <div className="relative w-full">
                 <GoOrganization className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -220,15 +223,20 @@ const Explore: React.FC = () => {
               </div>
             </div>
             <button
-              type="button"
-              className="px-6 mx-auto flex items-center font-medium gap-3 py-3 rounded-md bg-primary-800 "
+              type="submit"
+              className="px-6 mx-auto flex items-center font-medium gap-3 py-3 rounded-md bg-primary-800"
+              disabled={loading}
             >
-              <span>
-                <Search className="size-5" />
-              </span>
-              Search
+              {loading ? (
+                <span>Searching...</span>
+              ) : (
+                <>
+                  <Search className="size-5" />
+                  <span>Search</span>
+                </>
+              )}
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -438,120 +446,12 @@ const Explore: React.FC = () => {
                 }
               >
                 {sortedRepos.map((repo) => (
-                  <div
+                  <RepoCard
                     key={repo.id}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700"
-                  >
-                    <div
-                      className={
-                        viewMode === "list" && breakpoint !== "sm"
-                          ? "flex items-center justify-between"
-                          : "space-y-4"
-                      }
-                    >
-                      <div
-                        className={
-                          viewMode === "list" && breakpoint !== "sm"
-                            ? "flex-1"
-                            : ""
-                        }
-                      >
-                        {/* Repo Header */}
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center space-x-2">
-                            <Link
-                              to={`/repo/${repo.owner}/${repo.name}`}
-                              className="font-mono text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-                            >
-                              {`${repo.owner}/${repo.name}`}
-                            </Link>
-                            <a
-                              href={`https://github.com/${repo.owner}/${repo.name}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                            >
-                              <ExternalLink className="size-4" />
-                            </a>
-                          </div>
-                          {!repo.hasFullData && (
-                            <span className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
-                              Limited Data
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                          {repo.description}
-                        </p>
-
-                        {/* Meta Info */}
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                          <div className="flex items-center space-x-1">
-                            <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                            <span>{repo.language}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4" />
-                            <span>{repo.stars.toLocaleString()}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <GitFork className="h-4 w-4" />
-                            <span>{repo.forks.toLocaleString()}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{repo.lastUpdated}</span>
-                          </div>
-                        </div>
-
-                        {/* Badges */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {repo.badges.map((badge, index) => (
-                            <span
-                              key={index}
-                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(
-                                badge
-                              )}`}
-                            >
-                              {getBadgeIcon(badge)}
-                              <span className="ml-1 capitalize">{badge}</span>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Score and Actions */}
-                      <div
-                        className={`${
-                          viewMode === "list" && breakpoint !== "sm"
-                            ? "flex items-center space-x-6"
-                            : "flex items-center justify-between"
-                        }`}
-                      >
-                        <div className="text-center">
-                          <div
-                            className={`text-2xl font-bold ${getScoreColor(
-                              repo.score
-                            )} mb-1`}
-                          >
-                            {repo.score}
-                          </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">
-                            Health Score
-                          </div>
-                        </div>
-
-                        <Link
-                          to={`/repo/${repo.owner}/${repo.name}`}
-                          className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
-                        >
-                          View Report
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+                    repo={repo}
+                    viewMode={viewMode}
+                    breakPoint={breakpoint}
+                  />
                 ))}
               </div>
             ) : (
@@ -575,12 +475,14 @@ const Explore: React.FC = () => {
                 </button>
               </div>
             )}
-            <button
-              type="button"
-              className="px-5 py-3 rounded-md bg-primary-600 font-medium my-5"
-            >
-              See more
-            </button>
+            {sortedRepos.length > 0 && (
+              <button
+                type="button"
+                className="px-5 py-3 rounded-md bg-primary-600 font-medium my-5"
+              >
+                See more
+              </button>
+            )}
           </div>
         </div>
 
@@ -620,3 +522,125 @@ const Explore: React.FC = () => {
 };
 
 export default Explore;
+
+const RepoCard = ({
+  repo,
+  viewMode,
+  breakPoint,
+}: {
+  repo: Repositories;
+  viewMode: string;
+  breakPoint: string;
+}) => {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700">
+      <div
+        className={
+          viewMode === "list" && breakPoint !== "sm"
+            ? "flex items-center justify-between"
+            : "space-y-4"
+        }
+      >
+        <div
+          className={viewMode === "list" && breakPoint !== "sm" ? "flex-1" : ""}
+        >
+          {/* Repo Header */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-2">
+              <Link
+                to={`/repo/${repo.full_name}`}
+                className="font-mono text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              >
+                {`${repo.full_name}`}
+              </Link>
+              <a
+                href={`https://github.com/${repo.full_name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              >
+                <ExternalLink className="size-4" />
+              </a>
+            </div>
+            {(!repo.scorecard || !repo.criticality) && (
+              <span className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
+                Limited Data
+              </span>
+            )}
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+            {repo.description}
+          </p>
+
+          {/* Meta Info */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <div className="flex items-center space-x-1">
+              {/* <div className="w-3 h-3 bg-yellow-400 rounded-full"></div> */}
+              <Languages className="h-4 w-4" />
+
+              <span>{repo.language}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <Star className="h-4 w-4" />
+              <span>{repo.stargazers_count.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <GitFork className="h-4 w-4" />
+              <span>{repo.forks_count.toLocaleString()}</span>
+            </div>
+            {/* <div className="flex items-center space-x-1">
+              <Clock className="h-4 w-4" />
+              <span className="capitalize">{dayjs().to(dayjs(new Date(repo.updated_at)))}</span>
+            </div> */}
+          </div>
+
+          {/* Badges */}
+          {/* <div className="flex flex-wrap gap-2 mb-4">
+            {repo?.badges?.map((badge, index) => (
+              <span
+                key={index}
+                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(
+                  badge
+                )}`}
+              >
+                {getBadgeIcon(badge)}
+                <span className="ml-1 capitalize">{badge}</span>
+              </span>
+            ))}
+          </div> */}
+        </div>
+
+        {/* Score and Actions */}
+        <div
+          className={`${
+            viewMode === "list" && breakPoint !== "sm"
+              ? "flex items-center space-x-6"
+              : "flex items-center justify-between"
+          }`}
+        >
+          <div className="text-center">
+            <div
+              className={`text-2xl font-bold ${getScoreColor(
+                repo.health_score
+              )} mb-1`}
+            >
+              {repo.health_score}
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Health Score
+            </div>
+          </div>
+
+          <Link
+            to={`/repo/${repo.full_name}`}
+            className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
+          >
+            View Report
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
