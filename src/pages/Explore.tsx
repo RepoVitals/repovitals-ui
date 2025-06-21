@@ -4,6 +4,7 @@ import {
   CheckCircle,
   Clock,
   ExternalLink,
+  File,
   GitFork,
   Plus,
   Search,
@@ -12,9 +13,10 @@ import {
   Star,
   TrendingUp,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { repositories } from "../components/constants";
+import { GoOrganization } from "react-icons/go";
 
 function getBreakpoint(width: number): string {
   if (width < 640) return "sm";
@@ -25,9 +27,10 @@ function getBreakpoint(width: number): string {
 }
 
 const Explore: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("all");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchInput, setSearchInput] = useState({
+    owner: "",
+    repo: "",
+  });
   const [scoreRange, setScoreRange] = useState([0, 10]);
   const [sortBy, setSortBy] = useState("score");
   const [showFilters, setShowFilters] = useState(false);
@@ -35,6 +38,46 @@ const Explore: React.FC = () => {
   const [breakpoint, setBreakpoint] = useState(() =>
     getBreakpoint(window.innerWidth)
   );
+  const [selectedData, setSelectedData] = useState({
+    language: "all",
+    category: "all",
+  });
+
+  const { category, language } = selectedData;
+  const { owner, repo } = searchInput;
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSearchInput((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleLanguageAndCategorySelection = (
+    e: ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setSelectedData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleReset = () => {
+    setSelectedData({
+      category: "all",
+      language: "all",
+    });
+    setSearchInput({
+      owner: "",
+      repo: "",
+    });
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,13 +147,11 @@ const Explore: React.FC = () => {
 
   const filteredRepos = repositories.filter((repo) => {
     const matchesSearch =
-      repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      repo.owner.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      repo.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLanguage =
-      selectedLanguage === "all" || repo.language === selectedLanguage;
-    const matchesCategory =
-      selectedCategory === "all" || repo.category === selectedCategory;
+      repo.name.toLowerCase().includes(searchInput.repo.toLowerCase()) ||
+      repo.owner.toLowerCase().includes(owner.toLowerCase());
+    // repo.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLanguage = language === "all" || repo.language === language;
+    const matchesCategory = category === "all" || repo.category === category;
     const matchesScore =
       repo.score >= scoreRange[0] && repo.score <= scoreRange[1];
 
@@ -150,17 +191,43 @@ const Explore: React.FC = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search repositories by name, owner, or description..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
-              />
+          <div className="max-w-2xl mx-auto space-y-5">
+            <div className="flex items-center gap-5">
+              <div className="relative w-full">
+                <GoOrganization className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+
+                <input
+                  type="text"
+                  placeholder="Enter Org Name or Username"
+                  value={owner}
+                  name="owner"
+                  onChange={handleSearch}
+                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
+                />
+              </div>
+              /
+              <div className="relative w-full">
+                <File className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+
+                <input
+                  type="text"
+                  placeholder="Enter Repo Name"
+                  name="repo"
+                  value={repo}
+                  onChange={handleSearch}
+                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
+                />
+              </div>
             </div>
+            <button
+              type="button"
+              className="px-6 mx-auto flex items-center font-medium gap-3 py-3 rounded-md bg-primary-800 "
+            >
+              <span>
+                <Search className="size-5" />
+              </span>
+              Search
+            </button>
           </div>
         </div>
       </div>
@@ -193,8 +260,9 @@ const Explore: React.FC = () => {
                     Language
                   </label>
                   <select
-                    value={selectedLanguage}
-                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                    name="language"
+                    value={language}
+                    onChange={handleLanguageAndCategorySelection}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     {languages.map((lang) => (
@@ -211,8 +279,9 @@ const Explore: React.FC = () => {
                     Category
                   </label>
                   <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    name="category"
+                    value={category}
+                    onChange={handleLanguageAndCategorySelection}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
                     {categories.map((cat) => (
@@ -497,9 +566,7 @@ const Explore: React.FC = () => {
                 </p>
                 <button
                   onClick={() => {
-                    setSearchTerm("");
-                    setSelectedLanguage("all");
-                    setSelectedCategory("all");
+                    handleReset();
                     setScoreRange([0, 10]);
                   }}
                   className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium"
