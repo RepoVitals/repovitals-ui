@@ -56,8 +56,6 @@ const Explore: React.FC = () => {
         `${VITE_API_ENDPOINT}/${apiParams}`
       );
 
-      console.log(data);
-
       if (data.success && !data.data) {
         toast.error(`Repo not found with format: ${owner}/${repo}`);
         setLoading(false);
@@ -173,7 +171,6 @@ const Explore: React.FC = () => {
         return 0;
     }
   });
-  console.log(sortedRepos[0], filteredRepos[0], sortedRepos);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
