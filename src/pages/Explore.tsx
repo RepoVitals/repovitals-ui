@@ -197,7 +197,7 @@ const Explore: React.FC = () => {
           >
             <div className="flex items-center gap-5">
               <div className="relative w-full">
-                <GoOrganization className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <GoOrganization className="absolute sm:block hidden left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
 
                 <input
                   type="text"
@@ -205,12 +205,12 @@ const Explore: React.FC = () => {
                   value={owner}
                   name="owner"
                   onChange={handleSearch}
-                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
+                  className="w-full pl-4 sm:pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
                 />
               </div>
               /
               <div className="relative w-full">
-                <File className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <File className="absolute left-4 sm:block hidden top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
 
                 <input
                   type="text"
@@ -218,7 +218,7 @@ const Explore: React.FC = () => {
                   name="repo"
                   value={repo}
                   onChange={handleSearch}
-                  className="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
+                  className="w-full pl-4 sm:pl-12 pr-4 py-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white shadow-sm"
                 />
               </div>
             </div>
