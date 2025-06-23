@@ -73,7 +73,7 @@ const RepoCard = ({
   breakPoint: string;
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700">
+    <div className="bg-white dark:bg-gray-800 min-w-full rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700">
       <div
         className={
           viewMode === "list" && breakPoint !== "sm"
@@ -89,7 +89,7 @@ const RepoCard = ({
             <div className="flex items-center space-x-2">
               <Link
                 to={`/repo/${repo.full_name}`}
-                className="font-mono text-lg max-w-[250px] truncate font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                className="font-mono text-lg max-w-[200px] truncate font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 {`${repo.full_name}`}
               </Link>
@@ -111,7 +111,7 @@ const RepoCard = ({
 
           {/* Description */}
           <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-            {repo.description}
+            {repo.description || "No description"}
           </p>
 
           {/* Meta Info */}
@@ -120,7 +120,7 @@ const RepoCard = ({
               {/* <div className="w-3 h-3 bg-yellow-400 rounded-full"></div> */}
               <Languages className="h-4 w-4" />
 
-              <span>{repo.language}</span>
+              <span>{repo.language || "none"}</span>
             </div>
             <div className="flex items-center space-x-1">
               <Star className="h-4 w-4" />
