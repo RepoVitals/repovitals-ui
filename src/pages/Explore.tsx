@@ -145,7 +145,7 @@ const Explore: React.FC = () => {
               .includes(`${owner}/${repo}`.toLowerCase()) ||
             repoItem.owner.toLowerCase().includes(owner.toLowerCase());
           const matchesLanguage =
-            language === "all" || repoItem.language === language;
+            language === "all" || repoItem.language.toLowerCase() === language.toLowerCase();
           // const matchesCategory =
           //   category === "all" || repoItem.category === category;
           const matchesScore =

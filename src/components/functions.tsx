@@ -68,13 +68,3 @@ export const getScoreColor = (score: number) => {
   if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
   return "text-red-600 dark:text-red-400";
 };
-
-// useEffect(() => {
-//   const handleResize = () => {
-//     const newBreakpoint = getBreakpoint(window.innerWidth);
-//     setBreakpoint(newBreakpoint);
-//   };
-
-//   window.addEventListener("resize", handleResize);
-//   return () => window.removeEventListener("resize", handleResize);
-// }, []);

@@ -21,8 +21,6 @@ function useFetch() {
     fetcher
   );
 
-  console.log(data);
-
   return { isLoading, error, data, nextPage };
 }
 
