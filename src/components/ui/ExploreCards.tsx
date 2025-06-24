@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { getBreakpoint, getScoreColor } from "../functions";
 import { Link } from "react-router-dom";
+import cn from "../utils";
 
 type Props = {
   repos: Repositories[];
@@ -79,24 +80,19 @@ const RepoCard = ({
   viewMode: string;
   breakPoint: string;
 }) => {
+  const mobile = viewMode === "list" && breakPoint !== "sm";
   return (
     <div className="bg-white dark:bg-gray-800 min-w-full rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700">
       <div
-        className={
-          viewMode === "list" && breakPoint !== "sm"
-            ? "flex items-center justify-between"
-            : "space-y-4"
-        }
+        className={cn(mobile ? "flex items-center justify-between gap-5" : "space-y-4", "relative")}
       >
-        <div
-          className={viewMode === "list" && breakPoint !== "sm" ? "flex-1" : ""}
-        >
+        <div className={mobile ? "flex-1" : ""}>
           {/* Repo Header */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-between w-full gap-5 mb-3">
+            <div className="flex items-center truncate space-x-2">
               <Link
                 to={`/repo/${repo.full_name}`}
-                className="font-mono text-lg max-w-[200px] truncate font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                className="font-mono text-lg  truncate font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               >
                 {`${repo.full_name}`}
               </Link>
@@ -110,7 +106,7 @@ const RepoCard = ({
               </a>
             </div>
             {(!repo.scorecard || !repo.criticality) && (
-              <div className="group relative">
+              <div className={cn("group sm:flex-none flex-1 relative ml-auto", mobile && "absolute left-full right-7 w-fit")}>
                 <AlertTriangle className="size-4 text-yellow-400 cursor-help" />
                 <p className="text-xs absolute w-fit group-hover:block hidden  animate-fade-in mt-3 left-auto backdrop-blur-3xl -right-2.5 whitespace-nowrap text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
                   Limited Data
@@ -165,7 +161,7 @@ const RepoCard = ({
         {/* Score and Actions */}
         <div
           className={`${
-            viewMode === "list" && breakPoint !== "sm"
+            mobile
               ? "flex items-center space-x-6"
               : "flex items-center justify-between"
           }`}
@@ -178,14 +174,14 @@ const RepoCard = ({
             >
               {repo.health_score}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs whitespace-nowrap text-gray-500 dark:text-gray-400">
               Health Score
             </div>
           </div>
 
           <Link
             to={`/repo/${repo.full_name}`}
-            className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
+            className="inline-flex items-center whitespace-nowrap px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium text-sm"
           >
             View Report
           </Link>
