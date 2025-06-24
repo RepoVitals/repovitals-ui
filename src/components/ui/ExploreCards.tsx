@@ -1,4 +1,11 @@
-import { ExternalLink, GitFork, Languages, Search, Star } from "lucide-react";
+import {
+  AlertTriangle,
+  ExternalLink,
+  GitFork,
+  Languages,
+  Search,
+  Star,
+} from "lucide-react";
 import { getBreakpoint, getScoreColor } from "../functions";
 import { Link } from "react-router-dom";
 
@@ -103,9 +110,12 @@ const RepoCard = ({
               </a>
             </div>
             {(!repo.scorecard || !repo.criticality) && (
-              <span className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
-                Limited Data
-              </span>
+              <div className="group relative">
+                <AlertTriangle className="size-4 text-yellow-400 cursor-help" />
+                <p className="text-xs absolute w-fit group-hover:block hidden  animate-fade-in mt-3 left-auto backdrop-blur-3xl -right-2.5 whitespace-nowrap text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-1 rounded-full">
+                  Limited Data
+                </p>
+              </div>
             )}
           </div>
 
