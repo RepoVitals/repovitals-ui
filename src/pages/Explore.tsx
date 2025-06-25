@@ -9,6 +9,7 @@ import useFetch from "../hooks/useFetch";
 import CardLoader from "../components/ui/loading-card";
 
 const Explore: React.FC = () => {
+  const [initialRepos, setInitialRepos] = useState<Repositories[]>([]);
   const { isLoading, data, error, nextPage } = useFetch();
 
   const [searchInput, setSearchInput] = useState({
@@ -24,15 +25,14 @@ const Explore: React.FC = () => {
     category: "all",
   });
   const [loading, setLoading] = useState(false);
-  const [initialRepos, setInitialRepos] = useState<Repositories[] | undefined>(
-    undefined
-  );
 
   const { category, language } = selectedData;
   const { owner, repo } = searchInput;
 
   useEffect(() => {
-    if (data) setInitialRepos(data.data);
+    if (data) {
+      setInitialRepos((prev) => [...prev, ...data.data]);
+    }
   }, [data]);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +145,8 @@ const Explore: React.FC = () => {
               .includes(`${owner}/${repo}`.toLowerCase()) ||
             repoItem.owner.toLowerCase().includes(owner.toLowerCase());
           const matchesLanguage =
-            language === "all" || repoItem.language.toLowerCase() === language.toLowerCase();
+            language === "all" ||
+            repoItem.language.toLowerCase() === language.toLowerCase();
           // const matchesCategory =
           //   category === "all" || repoItem.category === category;
           const matchesScore =
