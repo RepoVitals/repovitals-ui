@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import {
   Shield,
   Users,
-  AlertTriangle,
   Activity,
   GitCommit,
-  CheckCircle,
-  XCircle,
   FileText,
   ExternalLink,
   // Code2,
@@ -17,6 +14,7 @@ import {
   getCheckIcon,
   getScoreColor,
 } from "../components/functions";
+import HealthSummary from "../components/ui/HealthSumaryCards";
 
 const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -310,44 +308,9 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                 </div>
 
                 {/* Repository Health Summary */}
+
                 <div className="grid lg:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                      Health Summary
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Active development and maintenance
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Strong code review practices
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Fuzzing integration detected
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Some security vulnerabilities detected
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <XCircle className="h-5 w-5 text-red-500" />
-                        <span className="text-gray-600 dark:text-gray-300">
-                          Missing security policy
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  <HealthSummary data={repoData.scorecard} />
 
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -376,7 +339,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
               </div>
             )}
 
-            {activeTab === "scorecard" && (
+            {activeTab === "scorecard" && repoData.scorecard && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -462,7 +425,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
               </div>
             )}
 
-            {(activeTab === "criticality" && repoData.criticality) && (
+            {activeTab === "criticality" && repoData.criticality && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>

@@ -139,7 +139,7 @@ declare global {
       owners_url: string;
     };
     health_score: number;
-    scorecard: ScoreCard;
+    scorecard: ScoreCard | null;
     criticality: Criticality | null;
   };
 }
