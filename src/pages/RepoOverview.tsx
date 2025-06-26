@@ -16,26 +16,29 @@ import {
   Eye,
   Archive,
 } from "lucide-react";
-import { newRepoReport } from "../components/constants";
+import { fetcher, VITE_API_ENDPOINT } from "../components/constants";
 import RepoDetail from "./RepoDetail";
+import { getScoreColor } from "../components/functions";
+import useSWR from "swr";
+import dayjs from "dayjs";
 
 const RepoReport: React.FC = () => {
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [copiedBadge, setCopiedBadge] = useState(false);
 
-  // Mock data based on the API structure provided
-  const repoData = {
-    full_name: `${owner}/${name}`,
-    owner: owner,
-    ...newRepoReport,
-  };
+  const key = `${VITE_API_ENDPOINT}/host/github.com/repositories/${owner}/${name}`;
 
-  const getScoreColor = (score: number) => {
-    if (score >= 8) return "text-green-600 dark:text-green-400";
-    if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
-    if (score >= 4) return "text-orange-600 dark:text-orange-400";
-    return "text-red-600 dark:text-red-400";
-  };
+  const { data, error, isLoading } = useSWR<{ data: RepoReport }>(key, fetcher);
+
+  if (error) {
+    return <p>error...</p>;
+  }
+
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+
+  const { data: repoData } = data!;
 
   const getScoreBg = (score: number) => {
     if (score >= 8) return "bg-green-50 dark:bg-green-900/20";
@@ -44,26 +47,12 @@ const RepoReport: React.FC = () => {
     return "bg-red-50 dark:bg-red-900/20";
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
-    );
-
-    if (diffInHours < 24) return `${diffInHours} hours ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 30) return `${diffInDays} days ago`;
-    const diffInMonths = Math.floor(diffInDays / 30);
-    return `${diffInMonths} months ago`;
-  };
-
   const badgeUrl = `https://img.shields.io/badge/RepoVitals-${
-    repoData.repovitals_score
+    repoData.health_score
   }-${
-    repoData.repovitals_score >= 8
+    repoData.health_score >= 8
       ? "brightgreen"
-      : repoData.repovitals_score >= 6
+      : repoData.health_score >= 6
       ? "yellow"
       : "red"
   }`;
@@ -83,9 +72,9 @@ const RepoReport: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             <div className="flex-1 space-y-6">
               {/* Repository Title */}
-              <div className="flex items-center space-x-3">
-                <Shield className="h-8 w-8 text-primary-600" />
-                <h1 className="text-3xl font-bold font-mono text-gray-900 dark:text-white">
+              <div className="flex items-center space-x-3 ">
+                <Shield className="h-8 w-8 shrink-0 text-primary-600" />
+                <h1 className="text-xl sm:text-3xl font-bold font-mono truncate text-gray-900 dark:text-white">
                   {repoData.full_name}
                 </h1>
                 <a
@@ -168,7 +157,9 @@ const RepoReport: React.FC = () => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Calendar className="h-4 w-4" />
-                  <span>Updated {formatTimeAgo(repoData.pushed_at)}</span>
+                  <span>
+                    Updated {dayjs(new Date(repoData.pushed_at)).fromNow()}
+                  </span>
                 </div>
               </div>
 
@@ -198,10 +189,10 @@ const RepoReport: React.FC = () => {
               <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-2xl">
                 <div
                   className={`text-5xl font-bold ${getScoreColor(
-                    repoData.repovitals_score
+                    repoData.health_score
                   )} mb-2`}
                 >
-                  {repoData.repovitals_score}
+                  {repoData.health_score}
                 </div>
                 <div className="text-gray-500 dark:text-gray-400 text-sm font-medium mb-4">
                   RepoVitals Score
@@ -235,55 +226,59 @@ const RepoReport: React.FC = () => {
 
               {/* Component Scores */}
               <div className="grid grid-cols-2 gap-4">
-                <div
-                  className={`${getScoreBg(
-                    repoData.scorecard.score
-                  )} rounded-xl p-4 text-center`}
-                >
-                  <Shield
-                    className={`h-6 w-6 ${getScoreColor(
-                      repoData.scorecard.score
-                    )} mx-auto mb-2`}
-                  />
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    Security
-                  </div>
+                {repoData.scorecard && (
                   <div
-                    className={`text-2xl font-bold ${getScoreColor(
+                    className={`${getScoreBg(
                       repoData.scorecard.score
-                    )}`}
+                    )} rounded-xl p-4 text-center`}
                   >
-                    {repoData.scorecard.score}
+                    <Shield
+                      className={`h-6 w-6 ${getScoreColor(
+                        repoData.scorecard.score
+                      )} mx-auto mb-2`}
+                    />
+                    <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                      Security
+                    </div>
+                    <div
+                      className={`text-2xl font-bold ${getScoreColor(
+                        repoData.scorecard.score
+                      )}`}
+                    >
+                      {repoData.scorecard.score}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div
-                  className={`${getScoreBg(
-                    repoData.criticality.score
-                  )} rounded-xl p-4 text-center`}
-                >
-                  <TrendingUp
-                    className={`h-6 w-6 ${getScoreColor(
-                      repoData.criticality.score
-                    )} mx-auto mb-2`}
-                  />
-                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    Criticality
-                  </div>
+                {repoData.criticality && (
                   <div
-                    className={`text-2xl font-bold ${getScoreColor(
+                    className={`${getScoreBg(
                       repoData.criticality.score
-                    )}`}
+                    )} rounded-xl p-4 text-center`}
                   >
-                    {repoData.criticality.score}
+                    <TrendingUp
+                      className={`h-6 w-6 ${getScoreColor(
+                        repoData.criticality.score
+                      )} mx-auto mb-2`}
+                    />
+                    <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                      Criticality
+                    </div>
+                    <div
+                      className={`text-2xl font-bold ${getScoreColor(
+                        repoData.criticality.score
+                      )}`}
+                    >
+                      {repoData.criticality.score}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {!repoData.hasFullData && (
+        {(!repoData.scorecard || !repoData.criticality) && (
           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-l-4 border-yellow-400 p-6 rounded-lg mb-8">
             <div className="flex items-start">
               <AlertTriangle className="h-6 w-6 text-yellow-600 dark:text-yellow-400 mt-0.5 mr-3 flex-shrink-0" />

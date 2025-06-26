@@ -1,4 +1,10 @@
+import axios from "axios";
 import { Github, Mail, Twitter } from "lucide-react";
+
+export const VITE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
+export const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 
 export const productLinks = [
   { label: "Explore", path: "/explore" },
@@ -298,7 +304,6 @@ export const repositories: Repositories[] = [
       last_scanned: "2025-06-16",
       checks: [
         {
-          
           name: "Maintained",
           score: 10,
           reason:

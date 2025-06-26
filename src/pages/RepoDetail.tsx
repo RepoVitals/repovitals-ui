@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Shield,
-  Code2,
   Users,
   AlertTriangle,
   Activity,
@@ -10,28 +9,32 @@ import {
   XCircle,
   FileText,
   ExternalLink,
+  // Code2,
   TrendingUp,
 } from "lucide-react";
-import { newRepoReport } from "../components/constants";
-import { formatDate, getCheckIcon } from "../components/functions";
+import {
+  formatDate,
+  getCheckIcon,
+  getScoreColor,
+} from "../components/functions";
 
-const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
-  repoData,
-}) => {
+const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
   const [activeTab, setActiveTab] = useState("overview");
-
-  const getScoreColor = (score: number) => {
-    if (score >= 8) return "text-green-600 dark:text-green-400";
-    if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
-    return "text-red-600 dark:text-red-400";
-  };
 
   const tabs = [
     { id: "overview", label: "Overview", icon: Activity },
-    { id: "scorecard", label: "Security Scorecard", icon: Shield },
-    { id: "criticality", label: "Criticality Score", icon: TrendingUp },
-    { id: "contributors", label: "Contributors", icon: Users },
-    { id: "dependencies", label: "Dependencies", icon: Code2 },
+    repoData.scorecard && {
+      id: "scorecard",
+      label: "Security Scorecard",
+      icon: Shield,
+    },
+    repoData.criticality && {
+      id: "criticality",
+      label: "Criticality Score",
+      icon: TrendingUp,
+    },
+    // { id: "contributors", label: "Contributors", icon: Users },
+    // { id: "dependencies", label: "Dependencies", icon: Code2 },
   ];
 
   return (
@@ -42,27 +45,29 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="flex space-x-8 px-8 py-4 overflow-x-auto">
               {tabs.map((tab) => {
-                const IconComponent = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 px-3 py-2 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
-                      activeTab === tab.id
-                        ? "border-primary-500 text-primary-600 dark:text-primary-400"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
-                    }`}
-                  >
-                    <IconComponent className="h-4 w-4" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
+                if (tab) {
+                  const IconComponent = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center space-x-2 px-3 py-2 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
+                        activeTab === tab.id
+                          ? "border-primary-500 text-primary-600 dark:text-primary-400"
+                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300"
+                      }`}
+                    >
+                      <IconComponent className="h-4 w-4" />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                }
               })}
             </nav>
           </div>
 
           <div className="p-8">
-            {activeTab === "contributors" && (
+            {/* {activeTab === "contributors" && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
                   Top Contributors
@@ -95,9 +100,9 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
 
-            {activeTab === "dependencies" && (
+            {/* {activeTab === "dependencies" && (
               <div>
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -156,7 +161,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
 
             {activeTab === "overview" && (
               <div className="space-y-8">
@@ -165,7 +170,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <GitCommit className="h-8 w-8 text-blue-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.commit_stats.total_commits.toLocaleString()}
+                      {repoData.CommitStats.total_commits.toLocaleString()}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Total Commits
@@ -175,7 +180,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <Users className="h-8 w-8 text-green-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.commit_stats.total_committers}
+                      {repoData.CommitStats.total_committers}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Contributors
@@ -185,7 +190,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <Activity className="h-8 w-8 text-purple-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.commit_stats.mean_commits.toFixed(1)}
+                      {repoData.CommitStats.mean_commits.toFixed(1)}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Avg Commits/Contributor
@@ -349,7 +354,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
                       Repository Files
                     </h3>
                     <div className="space-y-2">
-                      {Object.entries(repoData.metadata.files).map(
+                      {Object.entries(repoData.Metadata.Files).map(
                         ([key, value]) =>
                           value && (
                             <div
@@ -457,7 +462,7 @@ const RepoDetail: React.FC<{ repoData: typeof newRepoReport }> = ({
               </div>
             )}
 
-            {activeTab === "criticality" && (
+            {(activeTab === "criticality" && repoData.criticality) && (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>

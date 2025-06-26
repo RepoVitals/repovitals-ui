@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import useSWR from "swr";
+import { fetcher, VITE_API_ENDPOINT } from "../components/constants";
 
 type ApiRes = {
   data: Repositories[];
@@ -8,11 +8,9 @@ type ApiRes = {
   next_page: number;
 };
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 function useFetch() {
   const [page, setPage] = useState(1);
-  const VITE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
   const nextPage = () => setPage((prev) => prev + 1);
 
