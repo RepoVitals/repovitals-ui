@@ -47,6 +47,14 @@ const RepoReport: React.FC = () => {
     return "bg-red-50 dark:bg-red-900/20";
   };
 
+  repoData.health_score = parseFloat(repoData.health_score.toFixed(1));
+
+  if (repoData.criticality) {
+    repoData.criticality.score = parseFloat(
+      repoData.criticality.score.toFixed(1)
+    );
+  }
+
   const badgeUrl = `https://img.shields.io/badge/RepoVitals-${
     repoData.health_score
   }-${
