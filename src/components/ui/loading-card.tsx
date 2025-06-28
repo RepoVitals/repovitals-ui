@@ -92,6 +92,41 @@ export function RepoOverviewLoader() {
   );
 }
 
+export function QuickStatsLoader() {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        Quick Stats
+      </h3>
+      <div className="space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600 dark:text-gray-400">Name</span>
+
+          <span className="font-semibold text-gray-900 dark:text-white">
+            <Skeleton className="w-[50px]" />
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600 dark:text-gray-400">
+          Total Repositories
+          </span>
+          <span className="font-semibold text-gray-900 dark:text-white">
+            <Skeleton className="w-[50px]" />
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600 dark:text-gray-400">
+             Total Repository Owners
+          </span>
+          <span className="font-semibold text-gray-900 dark:text-white">
+            <Skeleton className="w-[50px]" />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**  bg-gray-500 animate-pulse h-5 rounded-full w-full */
 const Skeleton = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) => {
   return (

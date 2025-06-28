@@ -169,7 +169,7 @@ const About: React.FC = () => {
           <p className="text-xl text-primary-100 mb-8 leading-relaxed">
             We're committed to transparency and giving back to the community. Our core algorithms and methodologies are open source, and we actively contribute to the tools we build upon.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col *:justify-center sm:flex-row gap-4 justify-center">
             <a
               href="https://github.com/repovitals"
               target="_blank"
@@ -198,7 +198,7 @@ const About: React.FC = () => {
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
             We'd love to hear from you. Whether you have questions, suggestions, or want to contribute, we're here to help.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col *:justify-center sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"

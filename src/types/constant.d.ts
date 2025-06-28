@@ -49,6 +49,18 @@ declare global {
     }[];
   };
 
+  type QuickStats = {
+    name: string;
+    url: string;
+    kind: string;
+    repositories_count: number;
+    owners_count: number;
+    icon_url: string;
+    version: string;
+    created_at: string;
+    updated_at: string;
+  };
+
   type RepoReport = {
     id: number;
     uuid: string;

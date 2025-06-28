@@ -8,6 +8,7 @@ import ExploreUi from "../components/ui/ExploreCards";
 import useFetch from "../hooks/useFetch";
 import CardLoader from "../components/ui/loading-card";
 import ErrorDisplay from "../components/error-page";
+import QuickStatsSection from "../components/ui/QuickStats";
 
 const Explore: React.FC = () => {
   const [initialRepos, setInitialRepos] = useState<Repositories[]>([]);
@@ -358,37 +359,7 @@ const Explore: React.FC = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Quick Stats
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Total Repositories
-                  </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    1.2M+
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Scanned Today
-                  </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    2,847
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Average Score
-                  </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    7.3
-                  </span>
-                </div>
-              </div>
-            </div>
+            <QuickStatsSection />
           </div>
 
           {/* Main Content */}

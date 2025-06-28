@@ -35,6 +35,12 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
     // { id: "dependencies", label: "Dependencies", icon: Code2 },
   ];
 
+  const mean_commits = repoData.commit_stats.mean_commits
+    ? typeof repoData.commit_stats.mean_commits === "number"
+      ? repoData.commit_stats.mean_commits.toFixed(1)
+      : parseFloat(repoData.commit_stats.mean_commits).toFixed(1)
+    : 0;
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div>
@@ -188,11 +194,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <Activity className="h-8 w-8 text-purple-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {typeof repoData.commit_stats.mean_commits === "number"
-                        ? repoData.commit_stats.mean_commits.toFixed(1)
-                        : parseFloat(repoData.commit_stats.mean_commits).toFixed(
-                            1
-                          )}
+                      {mean_commits}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Avg Commits/Contributor

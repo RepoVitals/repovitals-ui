@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { RefreshCw, Home, Bug } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { BiError } from "react-icons/bi";
 
 interface ErrorDisplayProps {
   title?: string;
@@ -87,5 +88,19 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({
     </div>
   );
 };
+
+export function QuickStatsError() {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <h3 className="text-lg font-semibold text-red-500 mb-4">
+        <BiError />
+      </h3>
+
+      <span className="font-semibold text-gray-900 dark:text-white">
+        An error occured while fetching the quick stats
+      </span>
+    </div>
+  );
+}
 
 export default ErrorDisplay;
