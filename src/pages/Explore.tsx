@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ExploreUi from "../components/ui/ExploreCards";
 import useFetch from "../hooks/useFetch";
 import CardLoader from "../components/ui/loading-card";
+import ErrorDisplay from "../components/error-page";
 
 const Explore: React.FC = () => {
   const [initialRepos, setInitialRepos] = useState<Repositories[]>([]);
@@ -441,7 +442,14 @@ const Explore: React.FC = () => {
                 <CardLoader />
               </div>
             ) : error ? (
-              <p>error...</p>
+              <ErrorDisplay
+                title="Error getting Datas"
+                message={
+                  error instanceof Error
+                    ? error.message
+                    : `Error fetching RepoVitals for ${owner}/${name}`
+                }
+              />
             ) : (
               <ExploreUi
                 repos={sortedRepos}

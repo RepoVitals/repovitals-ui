@@ -99,7 +99,7 @@ const LandingPage: React.FC = () => {
                 <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                   Analyze GitHub repository health, security, and maintenance
                   signals with comprehensive scoring and insights powered by
-                  OSSF Scorecard, Criticality Score and Libraries.io.
+                  OSSF Scorecard, Criticality Score and Ecosyste.ms.
                 </p>
               </div>
 
@@ -248,7 +248,7 @@ const LandingPage: React.FC = () => {
                 <Code2 className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Libraries.io
+                Ecosyste.ms
               </h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Open dataset providing dependency information and package

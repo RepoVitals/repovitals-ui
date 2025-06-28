@@ -81,7 +81,7 @@ declare global {
     scm: string;
     pull_requests_enabled: boolean;
     icon_url: string;
-    Metadata: {
+    metadata: {
       Files: {
         readme: string;
         changelog: string;
@@ -104,10 +104,10 @@ declare global {
     updated_at: string;
     dependencies_parsed_at: string;
     dependency_job_id: string;
-    CommitStats: {
+    commit_stats: {
       total_commits: number;
       total_committers: number;
-      mean_commits: number;
+      mean_commits: number | string;
       dds: number;
       last_synced_commit: string;
     };

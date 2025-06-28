@@ -168,7 +168,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <GitCommit className="h-8 w-8 text-blue-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.CommitStats.total_commits.toLocaleString()}
+                      {repoData.commit_stats.total_commits.toLocaleString()}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Total Commits
@@ -178,7 +178,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <Users className="h-8 w-8 text-green-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.CommitStats.total_committers}
+                      {repoData.commit_stats.total_committers}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Contributors
@@ -188,7 +188,11 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6 text-center">
                     <Activity className="h-8 w-8 text-purple-500 mx-auto mb-3" />
                     <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {repoData.CommitStats.mean_commits.toFixed(1)}
+                      {typeof repoData.commit_stats.mean_commits === "number"
+                        ? repoData.commit_stats.mean_commits.toFixed(1)
+                        : parseFloat(repoData.commit_stats.mean_commits).toFixed(
+                            1
+                          )}
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
                       Avg Commits/Contributor
@@ -317,7 +321,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                       Repository Files
                     </h3>
                     <div className="space-y-2">
-                      {Object.entries(repoData.Metadata.Files).map(
+                      {Object.entries(repoData.metadata.Files).map(
                         ([key, value]) =>
                           value && (
                             <div

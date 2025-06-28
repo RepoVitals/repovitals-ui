@@ -1,10 +1,13 @@
 import { HTMLAttributes } from "react";
 import cn from "../utils";
-import { GitFork, Languages, Star } from "lucide-react";
+import { GitFork, Languages, Loader, Star } from "lucide-react";
 
 export default function CardLoader() {
   return [...Array(20)].map((_, idx) => (
-    <div key={idx} className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700">
+    <div
+      key={idx}
+      className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-all duration-200 hover:border-primary-200 dark:hover:border-primary-700"
+    >
       <div>
         <div className="w-full">
           <div className="flex items-center justify-between mb-3">
@@ -42,6 +45,51 @@ export default function CardLoader() {
       </div>
     </div>
   ));
+}
+
+export function RepoOverviewLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br">
+      <div className="max-w-md w-full rounded-2xl shadow-lg animate-fade-in">
+        <div
+          className={`flex flex-col items-center justify-center text-center p-8`}
+        >
+          <div className="relative mb-6">
+            <div className={` size-8 text-white animate-spin`}>
+              <Loader size={32} />
+            </div>
+            {/* Pulsing background circle */}
+            <div
+              className={`absolute inset-0 size-8 rounded-full animate-ping opacity-75`}
+            ></div>
+          </div>
+
+          <h2
+            className={`text-lg font-bold text-gray-100 mb-2 animate-slide-up`}
+          >
+            Loading...
+          </h2>
+
+          <p className="text-gray-50 animate-slide-up">
+            Please wait while we load your content
+          </p>
+
+          {/* Loading dots animation */}
+          <div className="flex space-x-1 mt-4 animate-slide-up">
+            <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"></div>
+            <div
+              className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.1s" }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-primary-400 rounded-full animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 /**  bg-gray-500 animate-pulse h-5 rounded-full w-full */

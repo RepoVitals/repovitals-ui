@@ -21,6 +21,8 @@ import RepoDetail from "./RepoDetail";
 import { getScoreColor } from "../components/functions";
 import useSWR from "swr";
 import dayjs from "dayjs";
+import ErrorDisplay from "../components/error-page";
+import { RepoOverviewLoader } from "../components/ui/loading-card";
 
 const RepoReport: React.FC = () => {
   const { owner, name } = useParams<{ owner: string; name: string }>();
@@ -31,11 +33,20 @@ const RepoReport: React.FC = () => {
   const { data, error, isLoading } = useSWR<{ data: RepoReport }>(key, fetcher);
 
   if (error) {
-    return <p>error...</p>;
+    return (
+      <ErrorDisplay
+        message={
+          error instanceof Error
+            ? error.message
+            : `Error fetching RepoVitals for ${owner}/${name}`
+        }
+        title="Error fetching RepoVitals"
+      />
+    );
   }
 
   if (isLoading) {
-    return <p>loading...</p>;
+    return <RepoOverviewLoader />;
   }
 
   const { data: repoData } = data!;
