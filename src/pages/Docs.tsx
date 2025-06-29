@@ -1,5 +1,5 @@
+import { BarChart3, Book, ChevronRight, Code2, ExternalLink, HelpCircle, Search, Shield, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import { Search, Book, Shield, BarChart3, Code2, Users, HelpCircle, ExternalLink, ChevronRight } from 'lucide-react';
 
 const Docs: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,7 +22,7 @@ const Docs: React.FC = () => {
       title: 'Scoring System',
       icon: BarChart3,
       items: [
-        'Overall Health Score',
+        'VitalScore',
         'Security Metrics',
         'Maintenance Indicators',
         'Popularity Factors'
@@ -142,14 +142,14 @@ const Docs: React.FC = () => {
       content: (
         <div className="space-y-8">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Overall Health Score</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">VitalScore</h3>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-              The overall health score is a weighted combination of three key areas: Security (40%), Maintenance (35%), and Popularity (25%). 
+              The VitalScore is a weighted combination of two key areas: Security (75%), and Criticality (25%). 
               This weighting reflects the importance of security and ongoing maintenance for long-term project sustainability.
             </p>
             <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
               <code className="text-sm text-gray-800 dark:text-gray-200">
-                Overall Score = (Security × 0.4) + (Maintenance × 0.35) + (Popularity × 0.25)
+              VitalScore = (Scorecard + 0.5 × Criticality) / 1.5
               </code>
             </div>
           </div>
