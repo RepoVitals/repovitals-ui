@@ -157,7 +157,7 @@ const Pricing: React.FC = () => {
 
                   {plan.name === 'Enterprise' ? (
                     <Link
-                      to="https://form.typeform.com/to/E7dTSAHv"
+                      to="https://forms.gle/1VstyhtcFYkce562A"
                       className={`w-full inline-flex items-center justify-center px-6 py-3 ${plan.buttonColor} text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl`}
                     >
                       Join Waitlist {/* Contact Sales (Link should also be updated to /contact)*/}
@@ -165,7 +165,7 @@ const Pricing: React.FC = () => {
                     </Link>
                   ) : (
                     <Link
-                      to={plan.name === 'Free' ? '/explore' : 'https://form.typeform.com/to/E7dTSAHv'}
+                      to={plan.name === 'Free' ? '/explore' : 'https://forms.gle/1VstyhtcFYkce562A'}
                       className={`w-full inline-flex items-center justify-center px-6 py-3 ${plan.buttonColor} text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl`}
                     >
                       {plan.name === 'Free' ? 'Start Exploring' : 'Join Waitlist'} {/* Start Free Trial (also update Link) */}
@@ -280,7 +280,7 @@ const Pricing: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="https://form.typeform.com/to/E7dTSAHv"
+                to="https://forms.gle/1VstyhtcFYkce562A"
                 className="inline-flex items-center px-8 py-4 bg-white text-primary-600 hover:bg-gray-50 font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Join Waitlist {/* Start Free Trial (also update link)*/}

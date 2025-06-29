@@ -24,11 +24,10 @@ const Explore: React.FC = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedData, setSelectedData] = useState({
     language: "all",
-    category: "all",
   });
   const [loading, setLoading] = useState(false);
 
-  const { category, language } = selectedData;
+  const { language } = selectedData;
   const { owner, repo } = searchInput;
 
   useEffect(() => {
@@ -108,7 +107,6 @@ const Explore: React.FC = () => {
 
   const handleReset = () => {
     setSelectedData({
-      category: "all",
       language: "all",
     });
     setSearchInput({
@@ -128,15 +126,6 @@ const Explore: React.FC = () => {
     "Java",
     "C++",
   ];
-  const categories = [
-    "All",
-    "Web Framework",
-    "Developer Tool",
-    "AI/ML",
-    "Runtime",
-    "Database",
-    "Security",
-  ];
 
   const filteredRepos = initialRepos
     ? [
@@ -149,8 +138,6 @@ const Explore: React.FC = () => {
           const matchesLanguage =
             language === "all" ||
             repoItem.language.toLowerCase() === language.toLowerCase();
-          // const matchesCategory =
-          //   category === "all" || repoItem.category === category;
           const matchesScore =
             repoItem?.health_score >= scoreRange[0] &&
             repoItem?.health_score <= scoreRange[1];
@@ -278,25 +265,6 @@ const Explore: React.FC = () => {
                     {languages.map((lang) => (
                       <option key={lang} value={lang.toLowerCase()}>
                         {lang}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Category Filter */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Category
-                  </label>
-                  <select
-                    name="category"
-                    value={category}
-                    onChange={handleLanguageAndCategorySelection}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  >
-                    {categories.map((cat) => (
-                      <option key={cat} value={cat.toLowerCase()}>
-                        {cat}
                       </option>
                     ))}
                   </select>
