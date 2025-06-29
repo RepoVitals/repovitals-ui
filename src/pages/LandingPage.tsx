@@ -158,7 +158,7 @@ const LandingPage: React.FC = () => {
                     9.2
                   </div>
                   <div className="text-sm text-gray-500">
-                    Overall Health Score
+                    VitalScore
                   </div>
                 </div>
 
