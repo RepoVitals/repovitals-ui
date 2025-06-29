@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
               Contact
             </Link>
             <Link
-                to="https://form.typeform.com/to/E7dTSAHv"
+                to="https://forms.gle/1VstyhtcFYkce562A"
                 className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
               >
                 Join Waitlist
@@ -131,7 +131,7 @@ const Navbar: React.FC = () => {
               Contact
             </Link>
             <Link
-                to="https://form.typeform.com/to/E7dTSAHv"
+                to="https://forms.gle/1VstyhtcFYkce562A"
                 className="block mx-4 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg transition-colors text-center font-medium"
               >
                 Join Waitlist

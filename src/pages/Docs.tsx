@@ -95,7 +95,7 @@ const Docs: React.FC = () => {
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">What is RepoVitals?</h3>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
               RepoVitals is a comprehensive platform for analyzing the health, security, and maintainability of GitHub repositories. 
-              We combine data from industry-standard tools like OSSF Scorecard, Criticality Score, and Libraries.io to provide 
+              We combine data from industry-standard tools like OSSF Scorecard, Criticality Score, and Ecosyste.ms to provide 
               actionable insights about open source projects.
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 p-4 rounded">

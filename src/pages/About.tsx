@@ -34,7 +34,7 @@ const About: React.FC = () => {
                   Open source software forms the foundation of modern technology, yet understanding the health, security, and maintainability of these projects remains challenging for developers, organizations, and decision-makers.
                 </p>
                 <p>
-                  RepoVitals was born from the need to make repository assessment accessible, standardized, and actionable. We leverage industry-standard tools like OSSF Scorecard, Criticality Score, and Libraries.io to provide comprehensive insights that help the community make better choices.
+                  RepoVitals was born from the need to make repository assessment accessible, standardized, and actionable. We leverage industry-standard tools like OSSF Scorecard, Criticality Score, and Ecosyste.ms to provide comprehensive insights that help the community make better choices.
                 </p>
                 <p>
                   Our goal is simple: democratize access to repository health data and empower everyone to contribute to a more secure, sustainable open source ecosystem.
@@ -104,7 +104,7 @@ const About: React.FC = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Code2 className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Libraries.io</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Ecosyste.ms</h3>
               <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 Open dataset providing dependency information and package manager data for better understanding of project ecosystems.
               </p>
@@ -169,7 +169,7 @@ const About: React.FC = () => {
           <p className="text-xl text-primary-100 mb-8 leading-relaxed">
             We're committed to transparency and giving back to the community. Our core algorithms and methodologies are open source, and we actively contribute to the tools we build upon.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col *:justify-center sm:flex-row gap-4 justify-center">
             <a
               href="https://github.com/repovitals"
               target="_blank"
@@ -198,7 +198,7 @@ const About: React.FC = () => {
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
             We'd love to hear from you. Whether you have questions, suggestions, or want to contribute, we're here to help.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col *:justify-center sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
