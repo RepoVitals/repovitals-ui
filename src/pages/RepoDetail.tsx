@@ -492,7 +492,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                     <div
-                      className="bg-green-500 h-2 rounded-full"
+                      className="bg-green-500 h-2 max-w-full rounded-full"
                       style={{
                         width: `${
                           repoData.criticality.issue_comment_frequency * 100
