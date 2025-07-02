@@ -2,6 +2,7 @@ import { toPng } from "html-to-image";
 import {
   Badge,
   Download,
+  Eye,
   GitFork,
   Shield,
   Star,
@@ -67,12 +68,34 @@ const ImgCard = ({
             <GitFork className="h-4 w-4" />
             <span>{repoData.forks_count.toLocaleString()}</span>
           </div>
+          <div className="flex items-center space-x-2 text-sm">
+            <Eye className="h-4 w-4" />
+            <span>{repoData.subscribers_count} watchers</span>
+          </div>
         </div>
       </div>
 
       <p className="text-zinc-100 ">
         {repoData.description || "No description"}
       </p>
+
+      {repoData.topics.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {repoData.topics.slice(0, 8).map((topic, index) => (
+            <span
+              key={index}
+              className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+            >
+              {topic}
+            </span>
+          ))}
+          {repoData.topics.length > 8 && (
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              +{repoData.topics.length - 8} more
+            </span>
+          )}
+        </div>
+      )}
 
       <div className="text-center">
         <div
