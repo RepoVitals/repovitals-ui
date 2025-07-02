@@ -63,13 +63,14 @@ export function getBreakpoint(width: number): string {
   return "2xl";
 }
 
-// export const getScoreColor = (score: number) => {
-//   if (score >= 8) return "text-green-600 dark:text-green-400";
-//   if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
-//   return "text-red-600 dark:text-red-400";
-// };
+export const getScoreBg = (score: number = 0) => {
+  if (score >= 8) return "bg-green-50 dark:bg-green-900/20";
+  if (score >= 6) return "bg-yellow-50 dark:bg-yellow-900/20";
+  if (score >= 4) return "bg-orange-50 dark:bg-orange-900/20";
+  return "bg-red-50 dark:bg-red-900/20";
+};
 
-export const getScoreColor = (score: number) => {
+export const getScoreColor = (score: number = 0) => {
   if (score >= 8) return "text-green-600 dark:text-green-400";
   if (score >= 6) return "text-yellow-600 dark:text-yellow-400";
   if (score >= 4) return "text-orange-600 dark:text-orange-400";

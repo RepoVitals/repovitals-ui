@@ -18,11 +18,12 @@ import {
 } from "lucide-react";
 import { fetcher, VITE_API_ENDPOINT } from "../components/constants";
 import RepoDetail from "./RepoDetail";
-import { getScoreColor } from "../components/functions";
+import { getScoreBg, getScoreColor } from "../components/functions";
 import useSWR from "swr";
 import dayjs from "dayjs";
 import ErrorDisplay from "../components/error-page";
 import { RepoOverviewLoader } from "../components/ui/loading-card";
+import RepoDetailsImg from "../components/RepoCardImg";
 
 const RepoReport: React.FC = () => {
   const { owner, name } = useParams<{ owner: string; name: string }>();
@@ -51,12 +52,7 @@ const RepoReport: React.FC = () => {
 
   const { data: repoData } = data!;
 
-  const getScoreBg = (score: number) => {
-    if (score >= 8) return "bg-green-50 dark:bg-green-900/20";
-    if (score >= 6) return "bg-yellow-50 dark:bg-yellow-900/20";
-    if (score >= 4) return "bg-orange-50 dark:bg-orange-900/20";
-    return "bg-red-50 dark:bg-red-900/20";
-  };
+
 
   repoData.health_score = parseFloat(repoData.health_score.toFixed(1));
 
@@ -200,6 +196,8 @@ const RepoReport: React.FC = () => {
                   )}
                 </div>
               )}
+
+              <RepoDetailsImg repoData={repoData} />
             </div>
 
             {/* Score Section */}
@@ -245,53 +243,49 @@ const RepoReport: React.FC = () => {
 
               {/* Component Scores */}
               <div className="grid grid-cols-2 gap-4">
-                {repoData.scorecard && (
-                  <div
-                    className={`${getScoreBg(
-                      repoData.scorecard.score
-                    )} rounded-xl p-4 text-center`}
-                  >
-                    <Shield
-                      className={`h-6 w-6 ${getScoreColor(
-                        repoData.scorecard.score
-                      )} mx-auto mb-2`}
-                    />
-                    <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Security
-                    </div>
-                    <div
-                      className={`text-2xl font-bold ${getScoreColor(
-                        repoData.scorecard.score
-                      )}`}
-                    >
-                      {repoData.scorecard.score}
-                    </div>
+                <div
+                  className={`${getScoreBg(
+                    repoData.scorecard?.score
+                  )} rounded-xl p-4 text-center`}
+                >
+                  <Shield
+                    className={`h-6 w-6 ${getScoreColor(
+                      repoData.scorecard?.score
+                    )} mx-auto mb-2`}
+                  />
+                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Security
                   </div>
-                )}
+                  <div
+                    className={`text-2xl font-bold ${getScoreColor(
+                      repoData.scorecard?.score
+                    )}`}
+                  >
+                    {repoData.scorecard?.score || "N/A"}
+                  </div>
+                </div>
 
-                {repoData.criticality && (
-                  <div
-                    className={`${getScoreBg(
-                      repoData.criticality.score
-                    )} rounded-xl p-4 text-center`}
-                  >
-                    <TrendingUp
-                      className={`h-6 w-6 ${getScoreColor(
-                        repoData.criticality.score
-                      )} mx-auto mb-2`}
-                    />
-                    <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Criticality
-                    </div>
-                    <div
-                      className={`text-2xl font-bold ${getScoreColor(
-                        repoData.criticality.score
-                      )}`}
-                    >
-                      {repoData.criticality.score}
-                    </div>
+                <div
+                  className={`${getScoreBg(
+                    repoData.criticality?.score
+                  )} rounded-xl p-4 text-center`}
+                >
+                  <TrendingUp
+                    className={`h-6 w-6 ${getScoreColor(
+                      repoData.criticality?.score
+                    )} mx-auto mb-2`}
+                  />
+                  <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Criticality
                   </div>
-                )}
+                  <div
+                    className={`text-2xl font-bold ${getScoreColor(
+                      repoData.criticality?.score
+                    )}`}
+                  >
+                    {repoData.criticality?.score || "N/A"}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

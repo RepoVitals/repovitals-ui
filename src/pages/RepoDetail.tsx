@@ -6,7 +6,6 @@ import {
   GitCommit,
   FileText,
   ExternalLink,
-  // Code2,
   TrendingUp,
 } from "lucide-react";
 import {
@@ -15,22 +14,15 @@ import {
   getScoreColor,
 } from "../components/functions";
 import HealthSummary from "../components/ui/HealthSumaryCards";
+import NoDataDisplay from "../components/no-data";
 
 const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
   const [activeTab, setActiveTab] = useState("overview");
 
   const tabs = [
     { id: "overview", label: "Overview", icon: Activity },
-    repoData.scorecard && {
-      id: "scorecard",
-      label: "Security Scorecard",
-      icon: Shield,
-    },
-    repoData.criticality && {
-      id: "criticality",
-      label: "Criticality Score",
-      icon: TrendingUp,
-    },
+    { id: "scorecard", label: "Security Scorecard", icon: Shield },
+    { id: "criticality", label: "Criticality Score", icon: TrendingUp },
     // { id: "contributors", label: "Contributors", icon: Users },
     // { id: "dependencies", label: "Dependencies", icon: Code2 },
   ];
@@ -345,188 +337,199 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
               </div>
             )}
 
-            {activeTab === "scorecard" && repoData.scorecard && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      OSSF Scorecard Results
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      Security assessment based on {repoData.scorecard.version}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <div
-                      className={`text-3xl font-bold ${getScoreColor(
-                        repoData.scorecard.score
-                      )} mb-1`}
-                    >
-                      {repoData.scorecard.score}/10
+            {activeTab === "scorecard" &&
+              (repoData.scorecard ? (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        OSSF Scorecard Results
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        Security assessment based on{" "}
+                        {repoData.scorecard.version}
+                      </p>
                     </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Last scanned: {repoData.scorecard.last_scanned}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  {repoData.scorecard.checks.map((check, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-sm transition-shadow"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            {getCheckIcon(check.score)}
-                            <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
-                              {check.name}
-                            </span>
-                            <span
-                              className={`text-lg font-bold ${getScoreColor(
-                                check.score
-                              )}`}
-                            >
-                              {check.score === -1 ? "N/A" : `${check.score}/10`}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                            {check.reason}
-                          </p>
-                          {check.details && check.details.length > 0 && (
-                            <details className="text-xs text-gray-500 dark:text-gray-400">
-                              <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
-                                View details ({check.details.length} items)
-                              </summary>
-                              <ul className="mt-2 space-y-1 ml-4">
-                                {check.details
-                                  .slice(0, 3)
-                                  .map((detail, idx) => (
-                                    <li key={idx} className="list-disc">
-                                      {detail}
-                                    </li>
-                                  ))}
-                                {check.details.length > 3 && (
-                                  <li className="text-gray-400">
-                                    ... and {check.details.length - 3} more
-                                  </li>
-                                )}
-                              </ul>
-                            </details>
-                          )}
-                        </div>
-                        <a
-                          href={check.doc_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors ml-4"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
+                    <div className="text-right">
+                      <div
+                        className={`text-3xl font-bold ${getScoreColor(
+                          repoData.scorecard.score
+                        )} mb-1`}
+                      >
+                        {repoData.scorecard.score}/10
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Last scanned: {repoData.scorecard.last_scanned}
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {activeTab === "criticality" && repoData.criticality && (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Criticality Score Analysis
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      Measures the influence and importance of this project
-                    </p>
                   </div>
-                  <div className="text-right">
-                    <div
-                      className={`text-3xl font-bold ${getScoreColor(
-                        repoData.criticality.score
-                      )} mb-1`}
-                    >
-                      {repoData.criticality.score}/10
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      Last scanned: {repoData.criticality.last_scanned}
-                    </div>
+
+                  <div className="grid gap-4">
+                    {repoData.scorecard.checks.map((check, index) => (
+                      <div
+                        key={index}
+                        className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-sm transition-shadow"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              {getCheckIcon(check.score)}
+                              <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
+                                {check.name}
+                              </span>
+                              <span
+                                className={`text-lg font-bold ${getScoreColor(
+                                  check.score
+                                )}`}
+                              >
+                                {check.score === -1
+                                  ? "N/A"
+                                  : `${check.score}/10`}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                              {check.reason}
+                            </p>
+                            {check.details && check.details.length > 0 && (
+                              <details className="text-xs text-gray-500 dark:text-gray-400">
+                                <summary className="cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
+                                  View details ({check.details.length} items)
+                                </summary>
+                                <ul className="mt-2 space-y-1 ml-4">
+                                  {check.details
+                                    .slice(0, 3)
+                                    .map((detail, idx) => (
+                                      <li key={idx} className="list-disc">
+                                        {detail}
+                                      </li>
+                                    ))}
+                                  {check.details.length > 3 && (
+                                    <li className="text-gray-400">
+                                      ... and {check.details.length - 3} more
+                                    </li>
+                                  )}
+                                </ul>
+                              </details>
+                            )}
+                          </div>
+                          <a
+                            href={check.doc_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors ml-4"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
+              ) : (
+                <NoDataDisplay type="security scorecard" />
+              ))}
 
-                <div className="grid md:grid-cols-2 gap-6">
+            {activeTab === "criticality" &&
+              (repoData.criticality ? (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        Criticality Score Analysis
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        Measures the influence and importance of this project
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className={`text-3xl font-bold ${getScoreColor(
+                          repoData.criticality.score
+                        )} mb-1`}
+                      >
+                        {repoData.criticality.score}/10
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Last scanned: {repoData.criticality.last_scanned}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Commit Frequency
+                          </span>
+                          <span className="text-lg font-bold text-gray-900 dark:text-white">
+                            {repoData.criticality.commit_frequency.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                          <div
+                            className="bg-blue-500 h-2  max-w-full rounded-full"
+                            style={{
+                              width: `${
+                                repoData.criticality.commit_frequency * 100
+                              }%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Issue Comment Frequency
+                      </span>
+                      <span className="text-lg font-bold text-gray-900 dark:text-white">
+                        {repoData.criticality.issue_comment_frequency.toFixed(
+                          2
+                        )}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                      <div
+                        className="bg-green-500 h-2 max-w-full rounded-full"
+                        style={{
+                          width: `${
+                            repoData.criticality.issue_comment_frequency * 100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
                   <div className="space-y-4">
                     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between items-center">
                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Commit Frequency
+                          Recent Releases
                         </span>
-                        <span className="text-lg font-bold text-gray-900 dark:text-white">
-                          {repoData.criticality.commit_frequency.toFixed(2)}
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {repoData.criticality.recent_release_count}
                         </span>
                       </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                        <div
-                          className="bg-blue-500 h-2  max-w-full rounded-full"
-                          style={{
-                            width: `${
-                              repoData.criticality.commit_frequency * 100
-                            }%`,
-                          }}
-                        ></div>
+                    </div>
+
+                    <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          GitHub Mentions
+                        </span>
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {repoData.criticality.github_mention_count}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Issue Comment Frequency
-                    </span>
-                    <span className="text-lg font-bold text-gray-900 dark:text-white">
-                      {repoData.criticality.issue_comment_frequency.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                    <div
-                      className="bg-green-500 h-2 rounded-full"
-                      style={{
-                        width: `${
-                          repoData.criticality.issue_comment_frequency * 100
-                        }%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Recent Releases
-                      </span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {repoData.criticality.recent_release_count}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        GitHub Mentions
-                      </span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {repoData.criticality.github_mention_count}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+              ) : (
+                <NoDataDisplay type="criticality score" />
+              ))}
           </div>
         </div>
       </div>
