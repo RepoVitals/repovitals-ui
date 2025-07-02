@@ -3,13 +3,11 @@ import { ExternalLink } from "lucide-react";
 
 interface NoDatatDisplayProps {
   title?: string;
-  message?: string;
   type: string;
 }
 
 const NoDataDisplay: React.FC<NoDatatDisplayProps> = ({
   title = "Data Not Available",
-  message = "Something went wrong on our end. Please try again later.",
   type = "criticality",
 }) => {
   return (
@@ -22,11 +20,6 @@ const NoDataDisplay: React.FC<NoDatatDisplayProps> = ({
           <h1 className="text-2xl font-bold text-white animate-slide-up">
             {title}
           </h1>
-
-          {/* Message */}
-          <p className="text-gray-400 leading-relaxed animate-slide-up">
-            {message}
-          </p>
 
           <p className="text-gray-200">
             Join the waitist to request free {type} scans

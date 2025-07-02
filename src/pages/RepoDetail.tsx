@@ -426,10 +426,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   </div>
                 </div>
               ) : (
-                <NoDataDisplay
-                  type="security scorecard"
-                  message=" this information is not available at this time."
-                />
+                <NoDataDisplay type="security scorecard" />
               ))}
 
             {activeTab === "criticality" &&
@@ -531,10 +528,7 @@ const RepoDetail: React.FC<{ repoData: RepoReport }> = ({ repoData }) => {
                   </div>
                 </div>
               ) : (
-                <NoDataDisplay
-                  type="criticality score"
-                  message=" this information is not available at this time."
-                />
+                <NoDataDisplay type="criticality score" />
               ))}
           </div>
         </div>
