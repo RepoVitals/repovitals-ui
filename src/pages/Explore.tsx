@@ -1,14 +1,14 @@
-import { File, Plus, Search, Sliders } from "lucide-react";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { GoOrganization } from "react-icons/go";
 import axios, { AxiosError } from "axios";
+import { File, Plus, Search, Sliders } from "lucide-react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { GoOrganization } from "react-icons/go";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import ExploreUi from "../components/ui/ExploreCards";
-import useFetch from "../hooks/useFetch";
-import CardLoader from "../components/ui/loading-card";
 import ErrorDisplay from "../components/error-page";
+import ExploreUi from "../components/ui/ExploreCards";
+import CardLoader from "../components/ui/loading-card";
 import QuickStatsSection from "../components/ui/QuickStats";
+import useFetch from "../hooks/useFetch";
 
 const Explore: React.FC = () => {
   const [initialRepos, setInitialRepos] = useState<Repositories[]>([]);
@@ -273,7 +273,7 @@ const Explore: React.FC = () => {
                 {/* Score Range */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Health Score: {scoreRange[0]} - {scoreRange[1]}
+                    VitalScore: {scoreRange[0]} - {scoreRange[1]}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -317,7 +317,7 @@ const Explore: React.FC = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   >
-                    <option value="score">Health Score</option>
+                    <option value="score">VitalScore</option>
                     <option value="stars">Stars</option>
                     <option value="updated">Recently Updated</option>
                     <option value="name">Name</option>

@@ -1,13 +1,13 @@
 import {
-  AlertTriangle,
-  ExternalLink,
-  GitFork,
-  Languages,
-  Search,
-  Star,
+    AlertTriangle,
+    ExternalLink,
+    GitFork,
+    Languages,
+    Search,
+    Star,
 } from "lucide-react";
-import { getBreakpoint, getScoreColor } from "../functions";
 import { Link } from "react-router-dom";
+import { getBreakpoint, getScoreColor } from "../functions";
 import cn from "../utils";
 
 type Props = {
@@ -175,7 +175,7 @@ const RepoCard = ({
               {repo.health_score}
             </div>
             <div className="text-xs whitespace-nowrap text-gray-500 dark:text-gray-400">
-              Health Score
+              VitalScore
             </div>
           </div>
 
