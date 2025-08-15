@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Github, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 export const VITE_API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
@@ -21,8 +21,8 @@ export const companyLinks = [
 export const connectLinks = [
   { icon: Github, href: "https://github.com/repovitals" },
   {
-    icon: Twitter,
-    href: "https://twitter.com/intent/follow?screen_name=repovitals",
+    icon: Linkedin,
+    href: "https://www.linkedin.com/showcase/repovitalsapp",
   },
   { icon: Mail, href: "mailto:support@repovitals.com" },
 ];
